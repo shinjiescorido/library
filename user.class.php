@@ -10,6 +10,7 @@ require( './connector.php' );
 		var $transaction_Number;
 		var $password;
 		var $type;
+		var $id_number;
 
 	function setId($val){
 		$this->id=$val;
@@ -54,6 +55,11 @@ require( './connector.php' );
 		$this->type = $val;
 	}
 
+	function setIdNumber($val){
+
+		$this->id_number = $val;
+	}
+
 
 
 
@@ -91,6 +97,11 @@ require( './connector.php' );
 		//die($this->type);
 		return $this->type;
 	}
+
+	function getIdNumber(){
+		//die($this->type);
+		return $this->id_number;
+	}
 	
 	function mergeArrayToUser($row){
 		$this->id = $row->User_Id;
@@ -100,6 +111,8 @@ require( './connector.php' );
 		$this->phone_number = $row->Phone_Number;
 		$this->email_address = $row->Email_Address;
 		$this->type = $row->Type;
+		$this->password = $row->Password;
+		$this->id_number = $row->Id_Number;
 }
 
 	function getUser($id){
@@ -136,10 +149,10 @@ function saveUser(){
 		$password = $this->getPassword();
 		$types = $this->getType();
 		
-	mysql_query("INSERT INTO `library`.`user` (`User_Id`, `Name`, `Age`, `Address`, `Phone_Number`, `Email_Address`,`Password`,`Type`)".
-	" VALUES (NULL, '$name', '$age', '$address', '$phone_number', '$email_address', '$password','$types');
-	")or die("INSERT INTO `library`.`user` (`User_Id`, `Name`, `Age`, `Address`, `Phone_Number`, `Email_Address`,`Password`,`Type`)".
-	" VALUES (NULL, '$name', '$age', '$address', '$phone_number', '$email_address', '$password','$types');
+	mysql_query("INSERT INTO `library`.`user` (`User_Id`, `Name`, `Age`, `Address`, `Phone_Number`, `Email_Address`,`Password`,`Type`,`Id_Number`)".
+	" VALUES (NULL, '$name', '$age', '$address', '$phone_number', '$email_address', '$password','$types','$id_number');
+	")or die("INSERT INTO `library`.`user` (`User_Id`, `Name`, `Age`, `Address`, `Phone_Number`, `Email_Address`,`Password`,`Type`,`Id_Number`)".
+	" VALUES (NULL, '$name', '$age', '$address', '$phone_number', '$email_address', '$password','$types','$id_number');
 	");
 
 	}	
@@ -156,6 +169,24 @@ function getList($sortVal){
 	/* get all book sorted according to sortVal and return all results as an array */
 		return false;
 }	
+function saveUserToDb(){
+	$u_id = $this->getId();
+	$u_name = $this->getName();
+	$u_age = $this->getAge();
+	$u_address = $this->getAddress();
+	$u_phoneNumber = $this->getPhoneNumber();
+	$u_emailAddress = $this->getemailAddress();
+	$u_age = $this->getAge();
+	$u_password = $this->getPassword();
+
+	mysql_query("UPDATE `library`.`user` SET `Name` = '$u_name',
+`Age` = '$u_age',
+`Address` = '$u_address',
+`Phone_Number` = '$u_phoneNumber',
+`Email_Address` = '$u_emailAddress',
+`Password` = '$u_password' WHERE `user`.`User_Id` =$u_id") or die (mysql_error());
+
+}
 function getUserList(){
 	$resultArray = array();
 

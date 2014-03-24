@@ -11,6 +11,10 @@
     <link href="stylesheets/sticky-footer-navbar.css" rel="stylesheet">
  <link href="stylesheets/navbar-static-top.css" rel="stylesheet">
  <link href="stylesheets/screen.css" rel="stylesheet">
+  
+ <link href="bootstrap-3/css/bootstrap.min.css" rel="stylesheet">
+ <link href="bootstrap-3/css/bootstrap.css" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="/javascripts/html5shiv.js"></script>
@@ -19,7 +23,7 @@
   </head>
 
   <body bgcolor = "#993333" style="background-color:#993333">
-    <img src="images/banner.jpg" width="1010px" height="200px"/>
+   <img src="images/banner.jpg" width="1258px" height="200px"/> 
     <!-- Wrap all page content here -->
     <div id="wrap">
 
@@ -35,8 +39,8 @@
       		<form role="form" class="form-signin" method="post" action="/models/userCopy.php">
         <h2 class="form-signin-heading" style="color:#FFFFFF">Sign In</h2>
         <input type="hidden" name = "forlog" value="1" />
-       <a style="color:blue"><strong> Username: </strong></a><input name="email" type="text" autofocus="" required="" placeholder="Username" class="form-control">
-       <a style="color:blue"><strong> Password: </strong></a><input name="password" type="password" required="" placeholder="Password" class="form-control">
+       <a style="color:white"><strong> Username: </strong></a><input name="email" type="text" autofocus="" required="" placeholder="Username" class="form-control">
+       <a style="color:white"><strong> Password: </strong></a><input name="password" type="password" required="" placeholder="Password" class="form-control">
         <label class="checkbox">
           <input type="checkbox" value="remember-me"> Remember me
         </label>

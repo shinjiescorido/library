@@ -33,14 +33,14 @@
 
 
   <body bgcolor="#993333" style="background-color:#993333">
-  	<img src="images/banner.jpg" width="1010px" height="150px"/>
+  	<!--<img src="images/banner.jpg" width="1010px" height="150px"/>-->
     <!-- Wrap all page content here -->
     <div id="wrap">
 
       <!-- Fixed navbar -->
     	<?php 
 
-    	require('./header.php'); ?>
+	    	require('./header.php'); ?>
 	
 	<!-- Begin page content -->
       <div class="container">  
@@ -56,14 +56,17 @@
 <div class = "userTable">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
-		<tr>
-			<th>Name</th>
+		<tr style="background:grey" class="table-hover">
+			<th>Full Name</th>
 			<th>Age</th>
 			<th>Address</th>
 			<th>Phone</th>
 			<th>Email</th>
 			<th>Type</th>
+			<th>Id Number</th>
 			
+
+
 		</tr>
 	</thead>
 	
@@ -80,7 +83,11 @@
 			<td><?php echo $useritem->Address; ?></td>
 			<td><?php echo $useritem->Phone_Number; ?></td>
 			<td><?php echo $useritem->Email_Address; ?></td>	
-			<td><?php echo $useritem->Type; ?></td>	
+			<td><?php echo $useritem->Type; ?></td>
+			<td><?php echo $useritem->Id_Number; ?></td>	
+
+
+			?></td>
 
 		</tr>
 	<?php } ?>

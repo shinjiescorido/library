@@ -13,7 +13,11 @@
     <link href="stylesheets/sticky-footer-navbar.css" rel="stylesheet">
  <link href="stylesheets/navbar-static-top.css" rel="stylesheet">
  <link href="stylesheets/screen.css" rel="stylesheet">
- <link href="glyphicons"
+ <link href="glyphicons">
+
+ <link href="bootstrap-3/css/bootstrap.min.css" rel="stylesheet">
+ <link href="bootstrap-3/css/bootstrap.css" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="/javascripts/html5shiv.js"></script>
@@ -22,7 +26,7 @@
   </head>
 
   <body bgcolor="#660000" style="background-color:#660000">
-  	<img src="images/banner.jpg" width="1010px" height="150px"/>
+  	<!--<img src="images/banner.jpg" width="1010px" height="150px"/>-->
     <!-- Wrap all page content here -->
     <div id="wrap">
 
@@ -101,7 +105,8 @@ if($rows){
 $nowtime = date('Y/m/d');
 $rtime_borrow = date('Y/m/d',strtotime($nowtime . '+10 days'));
 foreach ($rows as $row) {
-echo "<tr style='background:#fff'>";
+$isBorrowed = $_book_c->isBorrowed($row->Book_Id);
+	echo "<tr style='background:#fff'>";
 	echo "<td><a data-toggle='modal' href='#catalog_{$row->Book_Id}'>".$row->Book_Id."</a>";
 			echo "<div id='catalog_{$row->Book_Id}' class='modal fade in' style='text-align:left'>
             <div class='modal-header'>
@@ -125,13 +130,17 @@ echo "<tr style='background:#fff'>";
             </div>
 </div>";
 	echo "</td>";
-	echo "<td>".$row->Title."</td>";
+	echo "<td><a href='/models/displaybook.php?bookid={$row->Book_Id}' target='_blank'>".$row->Title."</a></td>";
 	echo "<td>".$row->Publisher."</td>";
 	echo "<td>".$row->ISBN."</td>";
 	echo "<td>".$row->Author."</td>";
 	echo "<td>".$row->Category."</td>";
 	echo "<td>".$row->Location."</td>";
-	echo "<td><a data-toggle='modal' href='#borrow_{$row->Book_Id}'><button>Borrow</button></a>";
+	if(!$isBorrowed){
+	echo "<td><button class='btn btn-info' data-toggle='modal' href='#borrow_{$row->Book_Id}'>Borrow</button>";
+
+		//echo "<td><a href='#'>Reserve</a></td>";
+	
 	echo "<div id='borrow_{$row->Book_Id}' class='modal fade in' style='text-align:left'>
             <div class='modal-header'>
               <a class='close' data-dismiss='modal'>×</a>
@@ -141,9 +150,34 @@ echo "<tr style='background:#fff'>";
 					<strong>Book Title: </strong>{$row->Title} <br />
 					<strong>Date Borrowed: </strong> $nowtime <br />
 					<strong>Date Returned: </strong> $rtime_borrow <br />
-					<strong>Terms: </strong> Upon borrowing, you will be given 10 days to return the book. Failure to return the book after 10 days will result on a Php 10.00 per day fee.<br />
-					<div id='borrowbutton'><a href='javascript:void(0);' onclick='borrow({$uid},{$row->Book_Id});'>Borrow and Agree Terms</a></div>'
+					<strong>Terms: </strong> Upon borrowing, you will be given 10 days to return the book. Failure to return the book after 10 days will result on a Php 10.00 per day fee.<br />";
+	
+	//if(!$isBorrowed){
+	echo "<div id='borrowbutton'>
+	<button class='btn btn-info' onclick='borrow({$uid},{$row->Book_Id});'>
+		Borrow and Agree Terms
+	</button>
+	<span class='msger' style='display:none'>Okay</span>
+	</div>";
+	}else{
+		echo "<td><button class='btn btn-danger' data-toggle='modal' href='#borrow_{$row->Book_Id}'>Reserve</button>";
+	echo "<div id='borrow_{$row->Book_Id}' class='modal fade in' style='text-align:left'>
+            <div class='modal-header'>
+              <a class='close' data-dismiss='modal'>×</a>
+              <h3>You are about to borrow this book...</h3>
             </div>
+            <div class='modal-body'>  
+					<strong>Book Title: </strong>{$row->Title} <br />
+					<strong>Date Borrowed: </strong> $nowtime <br />
+					<strong>Date Returned: </strong> $rtime_borrow <br />
+					<strong>Terms: </strong>
+This Book is already Borrowed. 
+					<br />";
+		
+
+		echo "<button onclick='reserve({$uid},{$row->Book_Id});' id='reservebutton' class='btn btn-info'>Reserve Book?</button>";
+	}
+       echo     "</div>
             <div class='modal-footer'>
              
               <a href='#' class='btn' data-dismiss='modal'>Close</a>
@@ -168,11 +202,24 @@ echo "</tr>";
     <script src="javascripts/jquery.js"></script>
  <script src="javascripts/modal.js"></script>
  <script>
+ 	function reserve(userid,bookid){
+ 		alert(1);
+ 	}
 	function borrow(userid,bookid){
+		alert('userid'+userid+'- bookid'+bookid);
+							//jQuery('#borrowbutton a').show();
+					//jQuery('.msger').hide();
 		jQuery.post(
 				'/models/borrowbook.php',
 				{userid:userid,bookid:bookid}			
-			).done(function(data){jQuery('#borrowbutton').html(data);});		
+			).done(function(data){
+				//jQuery('#borrowbutton').html(data);
+				jQuery('#borrow_'+bookid).modal('hide');
+					//jQuery('#borrowbutton a').hide();
+					//jQuery('.msger').show();
+			}
+
+				);		
 	};
 </script>
   </body>

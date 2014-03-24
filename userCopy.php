@@ -12,6 +12,9 @@
     <link href="stylesheets/sticky-footer-navbar.css" rel="stylesheet">
  <link href="stylesheets/navbar-static-top.css" rel="stylesheet">
  <link href="stylesheets/screen.css" rel="stylesheet">
+
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+ <link href="/css/bootstrap.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="/javascripts/html5shiv.js"></script>
@@ -41,7 +44,7 @@ border-color: #237A12;
   </head>
 
   <body bgcolor="#993333" style="background-color:#993333">
-  	<img src="images/banner.jpg" width="1010px" height="150px"/>
+  <!--	<img src="images/banner.jpg" width="1010px" height="150px"/>-->
     <!-- Wrap all page content here -->
     <div id="wrap">
 
@@ -71,15 +74,19 @@ require( './transaction.class.php' );
 			<br />Phone Number: <?php echo $defaultuser->getPhoneNumber(); ?> <br />
 			<br />Email Address: <?php echo $defaultuser->getEmailAddress(); ?> <br />
 			<br />Type: <?php echo $defaultuser->getType(); ?> <br />
+			<br />Id Number: <?php echo $defaultuser->getIdNumber(); ?> <br />
 			
 			<?php
 				$trans = new Transaction();
 				$translist = $trans->getTransactionsByUserId($defaultuser->getId());
 				//print_r($translist);
 				$results = mysql_query("select * from user where User_Id = $uid");
+		   
+
+
 		   ?>
 		   <br />
-		   <button class="btn btn-success" style="float:right"><a href="/models/userCopy.php" style="color:black">Edit</a></button>
+		   <button class="btn btn-success" style="float:right; font-color:black"><a href="/models/editUser.php" >Edit</a></button>
 
 		   <hr>
 

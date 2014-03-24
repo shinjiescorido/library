@@ -147,7 +147,8 @@ require( './connector.php' );
 		or die
 		(mysql_error());
 	
-	return 'Okay!';
+	return "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Book has been Borrowed.
+</div>";
 	}
 
 	function updateTransaction( $id, $value, $column ){
@@ -164,6 +165,24 @@ require( './connector.php' );
 	}
 		return 'okay';
 			
+	}
+
+	function getHistory($bookid){
+		$resultArray = array();
+		$query = "SELECT transaction . * , user.Name as uname, (transaction.Date_Returned) as penalty ".
+					" FROM `transaction`".
+					" INNER JOIN user ON transaction.User_Id = user.User_Id".
+					" WHERE transaction.`Book_Id` =$bookid";
+		$result = mysql_query($query) or die (mysql_error());
+		//die(print_r($result));
+	while ( $row = @mysql_fetch_object( $result ) ) {
+			$penalty = floor((time() - strtotime($row->penalty))/86400)*10;
+
+			$row->penalty = ($penalty > 0)?$penalty:'0';
+			//echo $row->T_Id."---".$row->uname."<br />";
+			$resultArray[] = $row;
+		}
+			return ($resultArray);
 	}
 
 	

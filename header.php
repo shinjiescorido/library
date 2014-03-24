@@ -2,6 +2,7 @@
 require( './user.class.php' ); 
 //require( './transaction.class.php' );
 
+//die($_SESSION['userid']);
 	if($_POST['forreg']){
 		$user = new User();
 		//print_r($_POST);
@@ -13,6 +14,7 @@ require( './user.class.php' );
 		$user->setTransactionNumber($_POST['transaction_number']);
 		$user->setPassword($_POST['epword']);
 		$user->setType($_POST['type']);
+		$user->setIdNumber($_POST['id_number']);
 		$user->saveUser();
 		
 	}
@@ -23,7 +25,8 @@ require( './user.class.php' );
 	if($_POST['forlog']){
 		$emails = $_POST['email'];
 		$pass = $_POST['password'];
-	
+		//$pass = md5($_POST['pass']);
+
 $result = mysql_query("select User_Id from user where Email_Address = '$emails' && Password = '$pass'");
 	//echo "select User_Id from user where Email_Address = '$emails' && Password = '$pass'".;
 	//die(mysql_num_rows($result));
@@ -93,10 +96,13 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
             <li class=""><a href="/models/userCopy.php">User profile</a></li>
 			<li class=""><a href="/models/browse.php">Browse</a></li>
 			<?php } else { ?>
-			<li class=""><a href="/models/books.php">Inventory</a></li>
-			<li class=""><a href="/models/transaction.php">Account Manager</a></li>
-			<li class=""><a href="/models/users.php">Member Management</a></li>
-			
+			<li class=""><a href="/models/books.php">Book Management</a></li>
+			<li class=""><a href="/models/issue.php">Issue</a></li>
+			<li class=""><a href="/models/transaction.php">Return</a></li>
+			<li class=""><a href="/models/users.php">Accounts Manager</a></li>
+			<!-- mao ni ang ktong borrow og reserve books -->
+			<li class=""><a href="/models/inventory.php">Inventory</a></li>
+
 			<?php } ?>
 
 		</ul>
@@ -116,15 +122,17 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
             </div>
             <div class='modal-body'>
 		 	<form class="form-signin" action="" method="post" onsubmit='return true;' accept-charset="utf-8">
-		<input type="hidden" name="forreg" value="1" />	
-			<input name="email" id="email" value="" class="form-control" placeholder="Email Address" autofocus required /><br />
-			<input name="name" id="name" value="" class="form-control" placeholder="Full Name" required /><br />
-			<input name="age" id="age" value="" class="form-control" placeholder="Age" required /><br />
-			<input name="address" id="address" value="" class="form-control" placeholder="Address" required /><br />
-			<input name="phone_number" id="phone_number" value="" class="form-control" placeholder="Phone Number" required /><br />
-			<input name="transaction_number" id="transaction_number" value="" class="form-control" placeholder="Transaction Number" required /><br />
-			<input name="type" id="type" value="" class="form-control" placeholder="Type" required /><br />
-			<input name="epword" id="epword" type="password" value="" class="form-control" placeholder="Password" required /><br />
+			<input type="hidden" name="forreg" value="1" />	
+			
+			Full Name: <input name="name" id="name" value="" class="form-control" placeholder="Full Name" autofocus required /><br />
+			Age: <input name="age" id="age" value="" class="form-control" placeholder="Age" required /><br />
+			Address: <input name="address" id="address" value="" class="form-control" placeholder="Address" required /><br />
+			Phone Number: <input name="phone_number" id="phone_number" value="" class="form-control" placeholder="Phone Number" required /><br />
+			Email Address: <input name="email" id="email" value="" class="form-control" placeholder="Email Address"  required /><br />
+			Transaction Number: <input name="transaction_number" id="transaction_number" value="" class="form-control" placeholder="Transaction Number"  /><br />
+			Type: <input name="type" id="type" value="" class="form-control" placeholder="Type" required /><br />
+			Id Number: <input name="id_number" id="type" value="" class="form-control" placeholder="Id Number" required /><br />
+			Password: <input name="epword" id="epword" type="password" value="" class="form-control" placeholder="Password" required /><br />
 				 <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
 		</form>
             </div>

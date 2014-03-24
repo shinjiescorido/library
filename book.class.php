@@ -25,6 +25,26 @@ class Book{
 		return $this;
 		
 	}
+	function _display(){
+		//echo "<br />id: ".$this->getId();
+		echo "<br />title: ".$this->getTitle();
+		echo "<br />author: ".$this->getAuthor();
+		echo "<br />isbn: ".$this->getIsbn();
+		echo "<br />publisher: ".$this->getPublisher();
+		echo "<br />location: ".$this->getLocation();
+		echo "<br />status: ".$this->getStatus();
+		echo "<br />category: ".$this->getCategory();
+		echo ($this->getCopies($this->getTitle()) > 1) ? "<br />Copies: ".$this->getCopies($this->getTitle()) : '';
+	}
+	function getCopies($val){
+	$result = mysql_query("SELECT count( * ) AS copies"
+		." FROM `books`"
+		." WHERE `Title` = '$val'") or die (mysql_error());
+	$data=mysql_fetch_assoc($result);
+	//die(print_r($data));
+return ($data['copies'])?$data['copies']:false;
+
+	}
 	function display(){
 		//echo "<br />id: ".$this->getId();
 		echo "<br />title: ".$this->getTitle();
@@ -156,12 +176,37 @@ $result = mysql_query("select * from `library`.`books` where `$option` like '%$v
 			$resultArray = $this->getCategoryName($resultArray);
 			return $resultArray;
 }
+function getBookByCondition($con){
+	$query = '';
+	$_con = (!$con) ? '0' : $con;
+	//die("ddd".$_con."rr");
+				$query = "select * from `books` where `condition` = $_con";
+//die ($query);
+	$resultArray = array();
+$result = mysql_query($query) or die(mysql_error());
+	while ( $row = @mysql_fetch_object( $result ) ) {
+				$resultArray[] = $row;
+			}
+			$resultArray = $this->getCategoryName($resultArray);
+			//die(print_r($resultArray));
+
+			//$this->mergeArrayToBook($resultArray[0]);
+			return $resultArray;
+ 		/* 
+ 		condition 1 = missing
+ 		condition 2 = damaged
+ 		condition 3 = old
+ 		else conrmal
+
+ 		 */
+	}
 function findOneBook($val){
 $resultArray = array();
 $result = mysql_query("select * from `library`.`books` where `Book_Id` = '$val'")or die(mysql_error());
 	while ( $row = @mysql_fetch_object( $result ) ) {
 				$resultArray[] = $row;
 			}
+						$resultArray = $this->getCategoryName($resultArray);
 $this->mergeArrayToBook($resultArray[0]);
 			
 			return true;
@@ -177,6 +222,69 @@ foreach($rs as $r){
 	return $rs;
 		//return $this->category;
 	}
+function isBorrowed ($id){
+	$result = mysql_query("select b.Book_Id from books as b, transaction as t where b.Book_Id = t.Book_Id and t.status = 1 and b.Book_Id = $id");
+//	die("select b.Book_Id from books as b, transaction as t where b.Book_Id = t.Book_Id and t.status = 0 and b.Book_Id = $id");
+//die($result);
+
+	if (mysql_num_rows($result))
+		return true;
+	else
+		return false;
+
+
+
+}
+function getReturned($id){
+	$result = ("select t.Date_Returned where books as b, transaction as t 
+		where t.Book_Id = b.Book_Id 
+		and b.Book_Id = $id
+		");
+	return $result;
+}
+function getAllBooks(){
+$resultArray = array();
+	/* get all book sorted according to sortVal and return all results as an array */
+	$result = mysql_query("select * from `books` where `Status` = 0 && `condition` = 0")or die(mysql_error());
+	// $userObj = new User();
+	// $allUser = $userObj->getUserList();
+	// $userOptions = "";
+	// foreach ($allUser as $user) {
+	// $userOptions = $userOptions . "<option value='{$user->User_Id}'>".$user->Name."</option>";
+	// }
+	/*die("<a data-toggle='modal' data-target='#issue-{$row->Book_Id}' href=''>Issue book</a>".
+				"<div id='#issue-{$row->Book_Id}'>".
+				"<form action=''>".
+					"Student Name:".
+					"<select name='sid'>".
+						$userOptions.
+					"</select>".
+				"</form>".
+
+
+				"</div>");*/
+	while ( $row = @mysql_fetch_object( $result ) ) {
+				//$condition_ = floor((time() - strtotime($row->penalty))/86400)*10;
+
+				//$row->condition_ = ($penalty > 0)?$penalty:'0';
+				//$row->Status = ($row->Status)?'reserve':'borrow';
+				//$row->condition = ($row->condition)?'good':'damaged';	
+			//	$row->Category = $this->getCategoryName($row->Category);
+$row->action = "<a data-toggle='modal' href='#issue' data-id='{$row->Book_Id}' class='btn btn-primary announce'>Issue book</a>";
+				$resultArray[] = $row;
+			//	die(print_r($row));
+
+				//$resultArray[] = $penalty*10;
+			}			
+			//$aaData['aaData'] = $resultArray;
+			//$aar[] = $aaData;
+			$resultArray = $this->getCategoryName($resultArray);
+
+			return ( json_encode($resultArray) );
+			
+			//$resultArray = $this->getCategoryName($resultArray);
+			//return $resultArray;
+}
 function getList($sortVal){
 $resultArray = array();
 	/* get all book sorted according to sortVal and return all results as an array */
