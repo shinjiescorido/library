@@ -32,7 +32,8 @@
 
       <!-- Fixed navbar -->
     <?php
-require("./header.php");
+//require("./header.php");
+    require("./user.class.php");
      ?>
 
       <!-- Begin page content -->

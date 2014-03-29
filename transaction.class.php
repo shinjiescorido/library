@@ -137,18 +137,21 @@ require( './connector.php' );
 			return ( json_encode($resultArray) );
 	}
 	
-	function saveTransaction($userid,$bookid){
+	function saveTransaction($userid,$bookid,$type){
+	//	die("UPDATE  `books` SET  `Status` =  $type WHERE  `books`.`Book_Id` = $bookid");
 	$today = date('Y-m-d 00:00:00');
 	$return = date('Y-m-d 00:00:00',strtotime($today . '+10 days'));
-		mysql_query("INSERT INTO `library`.`transaction` ".
+mysql_query("INSERT INTO `library`.`transaction` ".
 	"(`T_Id`, `Date_Claimed`, `Date_Returned`, `Status`, `Stocks`, `Book_Id`, `User_Id`) ".
 		"VALUES ".
-		"(NULL, '$today', '$return', '1', '', '$bookid', '$userid')")
+		"(NULL, '$today', '$return', '$type', '', '$bookid', '$userid')")
 		or die
 		(mysql_error());
-	
-	return "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Book has been Borrowed.
-</div>";
+
+		$_type = ($type == 1)?'Borrowed':'Reserved';
+mysql_query("UPDATE  `books` SET  `Status` =  $type WHERE  `books`.`Book_Id` = $bookid")or die(mysql_error());
+	return "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Book has been ".
+$_type."</div>";
 	}
 
 	function updateTransaction( $id, $value, $column ){
@@ -172,7 +175,7 @@ require( './connector.php' );
 		$query = "SELECT transaction . * , user.Name as uname, (transaction.Date_Returned) as penalty ".
 					" FROM `transaction`".
 					" INNER JOIN user ON transaction.User_Id = user.User_Id".
-					" WHERE transaction.`Book_Id` =$bookid";
+					" WHERE transaction.`Book_Id` =$bookid AND transaction.`Status` = 1";
 		$result = mysql_query($query) or die (mysql_error());
 		//die(print_r($result));
 	while ( $row = @mysql_fetch_object( $result ) ) {
@@ -185,5 +188,22 @@ require( './connector.php' );
 			return ($resultArray);
 	}
 
+	function getReserveHistory($bookid){
+		$resultArray = array();
+		$query = "SELECT transaction . * , user.Name as uname, (transaction.Date_Returned) as penalty ".
+					" FROM `transaction`".
+					" INNER JOIN user ON transaction.User_Id = user.User_Id".
+					" WHERE transaction.`Book_Id` =$bookid AND transaction.`Status` = 2";
+		$result = mysql_query($query) or die (mysql_error());
+		//die(print_r($result));
+	while ( $row = @mysql_fetch_object( $result ) ) {
+			//$penalty = floor((time() - strtotime($row->penalty))/86400)*10;
+
+			//$row->penalty = ($penalty > 0)?$penalty:'0';
+			//echo $row->T_Id."---".$row->uname."<br />";
+			$resultArray[] = $row;
+		}
+			return ($resultArray);
+	}
 	
 }?>

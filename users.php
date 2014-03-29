@@ -78,7 +78,7 @@
 			
 		?>
 		<tr>
-			<td><a href="/models/userCopy.php"><?php echo $useritem->Name; ?></a></td>
+			<td><a target="_blank" href="/models/userCopy.php?id=<?php echo $useritem->User_Id; ?>"><?php echo $useritem->Name; ?></a></td>
 			<td><?php echo $useritem->Age; ?></td>
 			<td><?php echo $useritem->Address; ?></td>
 			<td><?php echo $useritem->Phone_Number; ?></td>

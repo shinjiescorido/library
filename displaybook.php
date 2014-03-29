@@ -33,6 +33,7 @@ $book->findOneBook($_GET['bookid']);
 <script type="text/javascript" charset="utf-8">
 	jQuery(document).ready(function($) {
     	$('#thistory').dataTable();
+    	$('#treserve').dataTable();
     	$('#myTab a:last').tab('show');
 	} );
 </script>
@@ -58,7 +59,13 @@ $book->findOneBook($_GET['bookid']);
 		<div class="container">
 			<div class="row">
 						<div class="bookinfo" style= "display:table">
-							<div style="float:left"><img style="width: 245px; height: 220px;padding:10px 38px 10px 10px; border:1px solid ccc" src="images/sample.jpg" /></div>
+							<div style="float:left">
+								<?php if(file_exists("./upload/img_".$book->getId().".jpg")){ ?>
+<img style="width: 245px; height: 220px;padding:10px 38px 10px 10px; border:1px solid ccc" src="upload/img_<?php echo $book->getId(); ?>.jpg" />
+								<?php } else { ?>							
+<img style="width: 245px; height: 220px;padding:10px 38px 10px 10px; border:1px solid ccc" src="images/sample.jpg" />
+<?php } ?>
+							</div>
 							<div style="float:right"><?php $book->_display(); ?></div>
 						</div>
 						<div class="bookhistory">
@@ -104,7 +111,36 @@ $book->findOneBook($_GET['bookid']);
 							</tbody>
 						</table>
 						</div>
-							  <div class="tab-pane" id="reservations">Hello</div>
+							  <div class="tab-pane" id="reservations">
+							<?php 
+								// list book history here10px 38px 10px 10px
+								$tObj = new Transaction();
+								$reserveHistory = $tObj->getReserveHistory($book->getId());
+							//
+							//	print_r($reserveHistory);
+							?>
+							<table id="treserve" style="width:100%">
+								<thead>
+									<tr>
+									<th>Transaction ID</th>
+									<th>Reserved By</th>
+									<th>Date Reserved</th>
+	
+								</tr>
+								</thead>
+								<tbody>
+							<?php	
+							foreach ($reserveHistory as $_res) {
+								echo "<tr>";
+										echo "<td>".$_res->T_Id."</td>";
+										echo "<td>".$_res->uname."</td>";
+										echo "<td>".$_res->Date_Claimed."</td>";
+								echo "</tr>";
+								}
+							?>
+							</tbody>
+						</table>
+							  </div>
 						</div>
 						
 

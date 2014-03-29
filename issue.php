@@ -66,17 +66,27 @@ var oTable = $('#booktable').dataTable( {
     <div id="wrap">
 
       <!-- Fixed navbar -->
-  <?php require('./header.php'); ?>
+  <?php //require('./header.php');
+require('./user.class.php');
+   ?>
       <!-- Begin page content -->
       <div class="container" style="background:#fff;padding:20px;"> 
         	<?php
-	if($_POST){
+	if(isset($_POST['bookid'])){
 		require('./transaction.class.php');
 		$sid = $_POST['sid'];
 		$bookid = $_POST['bookid'];
 		$trans = new Transaction();
-		echo $trans->saveTransaction($_POST['userid'],$_POST['bookid'])."<br />";
+		echo $trans->saveTransaction($sid,$bookid,1)."<br />";
 	}
+  if(isset($_POST['rbookid'])){
+    require('./transaction.class.php');
+    $rid = $_POST['rid'];
+    $rbookid = $_POST['rbookid'];
+    $trans = new Transaction();
+
+    echo $trans->saveTransaction($rid,$rbookid,2)."<br />";
+  }
  ?> 
       		<?php 
   	 $userObj = new User();
@@ -98,6 +108,21 @@ var oTable = $('#booktable').dataTable( {
   	"<input type='submit' value='Issue Book' class='btn btn-primary' /></div></form>".
   	"</div>".
   	"</div>";
+
+    echo "<div class='modal fade' id='reserve' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='false'>".
+    "<button aria-hidden='true' data-dismiss='modal' class='close' type='button'>×</button>".
+
+"<div style='padding:10px; min-height:200px;min-width:200px;'>".
+    "<form action='' method='post'>".
+    "<div class='control-group'>".  
+    "<label class='control-label' for='select02'>Student Name</label>". 
+    "<div class='controls'><select id='select02' class='form-control' name='rid'>".$userOptions."</select></div>".
+    "<input class='idholder' type='hidden' name='rbookid' />".
+    "<p>Reservations will start on the book's returned date.</p>".
+    "<input type='submit' value='Reserve Book' class='btn btn-success' /></div></form>".
+    "</div>".
+    "</div>";
+
 	?>
       				<table cellpadding="0" cellspacing="0" border="0" class="display" id="booktable">
 

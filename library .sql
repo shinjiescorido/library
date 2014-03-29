@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.4
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mar 14, 2014 at 08:45 AM
--- Server version: 5.1.41
--- PHP Version: 5.3.1
+-- Host: 127.0.0.1
+-- Generation Time: Mar 25, 2014 at 05:55 AM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.16
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,6 +19,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `library`
 --
+CREATE DATABASE IF NOT EXISTS `library` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `library`;
 
 -- --------------------------------------------------------
 
@@ -45,11 +48,11 @@ CREATE TABLE IF NOT EXISTS `books` (
 --
 
 INSERT INTO `books` (`Book_Id`, `Title`, `Author`, `ISBN`, `Publisher`, `Location`, `Status`, `Category`, `Stocks`, `condition`, `damage`) VALUES
-(9, 'The Grass Is Always Greener', 'Jeffrey Archer', '1-86092-049-7', 'PSICOM', 'T1032', '1', '0000000003', 1, 0, 'page'),
+(9, 'The Grass Is Always Greener', 'Jeffrey Archer', '1-86092-049-7', 'PSICOM', 'T1032', '1', '3', 1, 0, 'page'),
 (10, 'Murder', 'Arnold Bennett', '1-86092-012-8', 'Pearson', 'M1809', '1', '4', 1, 0, 'cover'),
 (11, 'Adaptive Moving Mesh Methods', 'Robert Russell', '1-18294-019-4', 'Shogakukan', 'A1273', '1', '4', 1, 1, 'none'),
 (12, 'Pride And Prejudice', 'Jane Austen', '1-18523-573-1', 'Informa', 'P1423', '1', '6', 1, 1, 'none'),
-(13, 'He Is Into Her', 'Maxinejiji', 'Maxinejiji', 'Booklat', 'H181', '', '7', 0, 1, 'none'),
+(13, 'He Is Into Her', 'Maxinejiji', '1-56133-791-1', 'Booklat', 'H181', '', '7', 0, 1, 'none'),
 (14, 'Ang Boyfriend Kong Artista', 'ModernongMariaClara', '1-12383-890-1', 'Summit Books', 'A472', '1', '7', 0, 1, 'none'),
 (15, 'Voiceless', 'HYSTG', 'HYSTG', 'PSICOM', 'V154', '', '6', 0, 0, 'none');
 
@@ -91,7 +94,9 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   `Stocks` int(10) NOT NULL,
   `Book_Id` int(10) NOT NULL,
   `User_Id` int(10) NOT NULL,
-  PRIMARY KEY (`T_Id`)
+  PRIMARY KEY (`T_Id`),
+  KEY `User_Id` (`User_Id`),
+  KEY `Book_Id` (`Book_Id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
@@ -135,6 +140,17 @@ INSERT INTO `user` (`User_Id`, `Name`, `Age`, `Address`, `Phone_Number`, `Email_
 (4, 'Celedonia Potot', '50', 'Mactan City Cebu', '4444-1666', 'admin@gmail.com', 0, 'admin', 'admin', 0),
 (5, 'Daniel John Padilla', '19', 'Buyong Maribago LLC', '495-8339', 'daniel.padilla@gmail.com', 0, 'student', 'daniel', 10304374),
 (6, 'Kathryn Chandria Padilla', '18', 'Buyong Maribago LLC', '495-8790', 'kathryn.bernardo@gmail.com', 0, 'student', 'kathryn', 10304020);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `transaction`
+--
+ALTER TABLE `transaction`
+  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`User_Id`) REFERENCES `user` (`User_Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`Book_Id`) REFERENCES `books` (`Book_Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

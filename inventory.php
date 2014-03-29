@@ -52,7 +52,7 @@
 	jQuery(document).ready(function($) {
     	$('#tmissing').dataTable();
     	$('#tdamage').dataTable();
-    	$('#told').dataTable();
+    	$('#ready_').dataTable();
     	$('#myTab a:last').tab('show');
 	} );
 </script>
@@ -70,10 +70,12 @@
       		$book_controller = new Book();
       		$book_controller2 = new Book();
       		$book_controller3 = new Book();
+      		$book_controller4 = new Book();
       		$book_missing = $book_controller->getBookBycondition(1);
       		//die(print_r($book_missing));
       		$book_damaged = $book_controller2->getBookBycondition(2);
       		$book_old = $book_controller3->getBookBycondition(3);
+      		$book_ready = $book_controller4->getBookBycondition(0);
       		
       		/*foreach ($r as $row) {
       			$row = $book_missing->mergeArrayToBook($row);
@@ -89,6 +91,7 @@
 					<li class="active"><a href="#missing" data-toggle="tab">Missing</a></li>
 					<li><a href="#damage" data-toggle="tab">Damaged</a></li>
 					<li><a href="#old" data-toggle="tab">Old</a></li>
+					<li><a href="#ready" data-toggle="tab">Ready</a></li>
 					</ul>
 						<div class="tab-content">
 							  <div class="tab-pane active" id="missing">
@@ -186,6 +189,37 @@ echo "<td><a data-toggle='modal' data-target='#myModal-{$book_controller3->getId
 							  		</tbody>
 							  	</table>
 							  </div> <!-- end of tab-pane -->
+<div class="tab-pane" id="ready">
+							  	<table id="ready_" style="width:80%">
+							  		<thead>
+							  			<tr>
+							  				<th>Book ID</th>
+							  				<th>Title</th>
+							  				<th>Author</th>
+							  				<th>Category</th>
+							  			</tr>
+							  		</thead>
+							  		<tbody>
+							  			<?php
+							  				foreach ($book_ready as $row) {
+							  					//die(print_r($row));
+							  					echo "<tr>";
+								      			$row = $book_controller4->mergeArrayToBook($row);
+								      			      	//	$book_missing->display();
+								      			      		//echo "<hr />";
+								      			      	//	die();
+								      		echo "<td>".$book_controller4->getId()."</td>";
+echo "<td><a data-toggle='modal' data-target='#myModal-{$book_controller4->getId()}' href='/models/displaybook.php?bookid={$book_controller4->getId()}'>".$book_controller4->getTitle()."</a>".
+"<div class='modal fade' id='myModal-{$book_controller4->getId()}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'></div>".
+"</td>";
+								      		echo "<td>".$book_controller4->getAuthor()."</td>";
+								      		echo "<td>".$book_controller4->getCategory()."</td>";
+								      			}
+								      			echo "</tr>";
+							  			 ?>
+							  		</tbody>
+							  	</table>
+							  </div> <!-- end of tab-pane -->						
 						</div> <!-- end of tab-content -->
 
 

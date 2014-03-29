@@ -30,7 +30,7 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-  <?php require('./header.php'); ?>
+  <?php //require('./header.php'); ?>
       <!-- Begin page content -->
       <div class="container">  
 
@@ -47,17 +47,51 @@ if($_POST){
 							
 							if(isset($_POST['bid']))
 							$_book->findOneBook($_POST['bid']);
-							
 							$_book->setTitle($_POST['title']);
 							$_book->setPublisher($_POST['publisher']);
 							$_book->setIsbn($_POST['isbn']);
 							$_book->setAuthor($_POST['author']);
 							$_book->setCategory($_POST['category']);
 							$_book->setLocation($_POST['location']);	
-							$_book->saveBook();
+							$nbid = $_book->saveBook();
 $rows = $_book->findBook($_book->getId(),'Book_Id');
+$allowedExts = array("jpeg", "jpg");
+$temp = explode(".", $_FILES["file"]["name"]);
+//die($nbid);
+$extension = end($temp);
+$_FILES["file"]["name"] = "img_".$nbid.".".$extension;
+//die($_FILES["file"]["name"]);
+if (in_array($extension, $allowedExts))
+  {
+  if ($_FILES["file"]["error"] > 0)
+    {
+    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+    }
+  else
+    {
+    echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+    echo "Type: " . $_FILES["file"]["type"] . "<br>";
+    echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+    echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
+
+    if (file_exists("upload/" . $_FILES["file"]["name"]))
+      {
+      echo $_FILES["file"]["name"] . " already exists. ";
+      }
+    else
+      {
+      move_uploaded_file($_FILES["file"]["tmp_name"],
+      "upload/" . $_FILES["file"]["name"]);
+      echo "Stored in: " . "upload/" . $_FILES["file"]["name"];
+      }
+    }
+  }
+else
+  {
+  echo "Invalid file";
+  }
 					}
-					
+				//	die();
 	
 }else{
 $_book = new Book();
@@ -76,11 +110,12 @@ $rows = $_book->getList(1);
 		<option value="Book_Id">Book ID</option>
 		<option value="Location">Location</option>
 	</select>
+
 	<input type="submit" value="search" style="border:1px solid #000" />&nbsp;
-	<?php if($_SESSION['userid']) { ?>
+	<?php //if($_SESSION['userid']) { ?>
 		<a data-toggle='modal' href="#add_book" class="btn btn-primary" style="float:right; color:black">Add Book</a>
 		<br>
-	<?php } ?>
+	<?php// } ?>
 
 	
  </form>
@@ -91,10 +126,11 @@ $rows = $_book->getList(1);
               <h3>Book Information</h3>
             </div>
             <div class='modal-body'>
-				<form class="form-signin" action="" method="post" onsubmit='return true;' accept-charset="utf-8">
+				<form class="form-signin" action="" method="post" onsubmit='return true;' accept-charset="utf-8" enctype="multipart/form-data">
 			 <h2 class="form-signin-heading"></h2>
 				
 				Book Title <input name="title" value="" class="form-control" placeholder="Book Title" required /><br />
+				<input type="file" class="form-control" placeholder="Book Image" name="file" id="file" />
 				Publisher <input name="publisher"  value="" class="form-control" placeholder="Publisher" autofocus required /><br />		
 				ISBN <input name="isbn"  value="" class="form-control" placeholder="ISBN" required /><br />				
 				Author <input name="author" value="" class="form-control" placeholder="Author" required /><br />
@@ -224,7 +260,7 @@ echo "</tr>";
 				{bid:id}			
 			).done(function(data){alert(data);location.reload();});		
 		}else{
-			return false;
+			return false; 
 		}
 	}
 </script>

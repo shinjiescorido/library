@@ -147,9 +147,11 @@ function saveBook(){
 		$category = $this->getCategory();
 		
 		if(!$this->getId()){
-		mysql_query("INSERT INTO `library`.`books` (`Book_Id`, `Title`, `Author`, `ISBN`, `Publisher`, `Location`, `Status`, `Category`)".
-		" VALUES (NULL, '$title', '$author', '$author', '$publisher', '$location', '$status', '$category');
+		mysql_query("INSERT INTO `library`.`books` (`Book_Id`, `Title`, `Author`, `ISBN`, `Publisher`, `Location`, `Status`,`condition`, `Category`)".
+		" VALUES (NULL, '$title', '$author', '$author', '$publisher', '$location', 0,0, '$category');
 		")or die(mysql_error());
+		$res_ = mysql_query("SELECT `Book_Id` FROM `books` WHERE `Title` = '$title' AND `Author` = '$author'");
+	return mysql_fetch_object($res_)->Book_Id;
 	}else{
 	$bookid = $this->getId();
 
@@ -166,6 +168,7 @@ function saveBook(){
 				return "saved successfully";
 			}
 	}
+	//return $bookid;
 	}	
 function findBook($val,$option){
 $resultArray = array();
@@ -245,7 +248,8 @@ function getReturned($id){
 function getAllBooks(){
 $resultArray = array();
 	/* get all book sorted according to sortVal and return all results as an array */
-	$result = mysql_query("select * from `books` where `Status` = 0 && `condition` = 0")or die(mysql_error());
+	$result = mysql_query("select * from `books` where `Status` < 2 && `condition` = 0")or die(mysql_error());
+	//die("select * from `books` where (`Status` = 0 || `Status` = 1) && `condition` = 0");
 	// $userObj = new User();
 	// $allUser = $userObj->getUserList();
 	// $userOptions = "";
@@ -270,7 +274,10 @@ $resultArray = array();
 				//$row->Status = ($row->Status)?'reserve':'borrow';
 				//$row->condition = ($row->condition)?'good':'damaged';	
 			//	$row->Category = $this->getCategoryName($row->Category);
+if($row->Status != 1)
 $row->action = "<a data-toggle='modal' href='#issue' data-id='{$row->Book_Id}' class='btn btn-primary announce'>Issue book</a>";
+else
+$row->action = "<a data-toggle='modal' href='#reserve' data-id='{$row->Book_Id}' class='btn btn-success announce'>Reserve</a>";
 				$resultArray[] = $row;
 			//	die(print_r($row));
 
@@ -295,6 +302,41 @@ $resultArray = array();
 			
 			$resultArray = $this->getCategoryName($resultArray);
 			return $resultArray;
+}
+
+function getAllReservedBooks(){
+$resultArray = array();
+	/* get all book sorted according to sortVal and return all results as an array */
+	$result = mysql_query("select * from `library`.`books` WHERE `Status` = 2")or die(mysql_error());
+			while ( $row = @mysql_fetch_object( $result ) ) {
+				$resultArray[] = $row;
+			}
+			
+			$resultArray = $this->getCategoryName($resultArray);
+			return $resultArray;
+}
+
+
+function getAllReturned(){
+$resultArray = array();
+	/* get all book sorted according to sortVal and return all results as an array */
+	$result = mysql_query("select * from `library`.`books` WHERE `Status` = 1")or die(mysql_error());
+			while ( $row = @mysql_fetch_object( $result ) ) {
+				$resultArray[] = $row;
+			}
+			
+			$resultArray = $this->getCategoryName($resultArray);
+			return $resultArray;
+}
+
+
+function cancelReservation($bookid){
+	mysql_query("UPDATE `books` SET `Status` = 1 WHERE `Book_Id` = $bookid") or die(mysql_error());
+	mysql_query("DELETE FROM `transaction` WHERE  `Status` =  2 && `Book_Id` = $bookid")or die(mysql_error());
+}
+function returnBook($bookid){
+	mysql_query("UPDATE `books` SET `Status` = 0 WHERE `Book_Id` = $bookid") or die(mysql_error());
+	mysql_query("DELETE FROM `transaction` WHERE  `Status` =  1 && `Book_Id` = $bookid")or die(mysql_error());
 }
 	
 } ?>

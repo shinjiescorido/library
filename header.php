@@ -23,11 +23,11 @@ require( './user.class.php' );
 	//$defaultuser->getUser(0000000002);
 	//$defaultuser->getUserList();
 	if($_POST['forlog']){
-		$emails = $_POST['email'];
+		$idnum = $_POST['idnum'];
 		$pass = $_POST['password'];
 		//$pass = md5($_POST['pass']);
 
-$result = mysql_query("select User_Id from user where Email_Address = '$emails' && Password = '$pass'");
+$result = mysql_query("select User_Id from user where Id_Number = '$idnum' && Password = '$pass'");
 	//echo "select User_Id from user where Email_Address = '$emails' && Password = '$pass'".;
 	//die(mysql_num_rows($result));
 	if(mysql_num_rows($result) > 0){

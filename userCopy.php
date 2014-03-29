@@ -13,8 +13,8 @@
  <link href="stylesheets/navbar-static-top.css" rel="stylesheet">
  <link href="stylesheets/screen.css" rel="stylesheet">
 
-  <link href="/css/bootstrap.min.css" rel="stylesheet">
- <link href="/css/bootstrap.css" rel="stylesheet">
+  <link href="/models/css/bootstrap.min.css" rel="stylesheet">
+ <link href="/models/css/bootstrap.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="/javascripts/html5shiv.js"></script>
@@ -49,16 +49,22 @@ border-color: #237A12;
     <div id="wrap">
 
       <!-- Fixed navbar -->
-    <?php require("./header.php"); ?>
+    <?php //require("./header.php");
+    	require('./user.class.php');
+     ?>
 
 <?php 
 //require( './user.class.php' ); 
 require( './transaction.class.php' );
 	$defaultuser = new User();
-	if(isset($_SESSION['userid']))
-	$defaultuser->getUser($_SESSION['userid']);
+	if(isset($_GET['id']))
+		$uid = $_GET['id'];
 	else
-		$defaultuser->getUser(002); // just put dummy value
+		$uid = $_SESSION['userid'];
+	//if(isset($_SESSION['userid']))
+	$defaultuser->getUser($uid);
+	//else
+	//	$defaultuser->getUser(002); // just put dummy value
 ?>
 	<!-- Begin page content -->
       <div class="container">  
@@ -86,7 +92,7 @@ require( './transaction.class.php' );
 
 		   ?>
 		   <br />
-		   <button class="btn btn-success" style="float:right; font-color:black"><a href="/models/editUser.php" >Edit</a></button>
+		   <button class="btn btn-success" style="<?php echo (isset($_SESSION['userid']))?'display:none;' : ''; ?>float:right; font-color:black"><a href="/models/editUser.php" >Edit</a></button>
 
 		   <hr>
 
@@ -107,12 +113,15 @@ require( './transaction.class.php' );
 			
 				$penalty = floor((time() - strtotime($tlist->Date_Returned))/86400);
 				echo "<tr style='background:#fff'>";
-					echo "<td>".$tlist->T_Id;
-					echo "<td>".$tlist->Title;
-					echo "<td>".date("Y-m-d",strtotime($tlist->Date_Claimed));
-					echo "<td>".date("Y-m-d",strtotime($tlist->Date_Returned));
+					echo "<td>".$tlist->T_Id."</td>";
+					echo "<td>".$tlist->Title."</td>";
+					echo "<td>".date("Y-m-d",strtotime($tlist->Date_Claimed))."</td>";
+echo ($tlist->Status == 1) ? "<td>".date("Y-m-d",strtotime($tlist->Date_Returned))."</td>" : "<td>Nan</td>";
 					echo ($penalty > 0)?"<td> Php ".($penalty*10).".00 </td>":"<td> Php 0.00 </td>";
-					echo ($tlist->Status)? "<td> not yet returned</td>":"<td>returned</td>";
+echo ($tlist->Status == 1)? "<td>not yet returned</td>":"<td>Reserved</td>";
+
+echo "</tr>";
+					//echo ($tlist->Status)? "<td> not yet returned</td>":"<td>returned</td>";
 			}
 	?>
 	</table>
