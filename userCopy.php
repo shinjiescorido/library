@@ -43,16 +43,16 @@ border-color: #237A12;
 
   </head>
 
-  <body bgcolor="#993333" style="background-color:#993333">
+  <body bgcolor="" style="">
   <!--	<img src="images/banner.jpg" width="1010px" height="150px"/>-->
     <!-- Wrap all page content here -->
     <div id="wrap">
 
       <!-- Fixed navbar -->
-    <?php //require("./header.php");
-    	require('./user.class.php');
+    <?php require("./header.php");
+    	//require('./user.class.php');
      ?>
-
+<?php //die($_SESSION['userid']); ?>
 <?php 
 //require( './user.class.php' ); 
 require( './transaction.class.php' );
@@ -63,6 +63,13 @@ require( './transaction.class.php' );
 		$uid = $_SESSION['userid'];
 	//if(isset($_SESSION['userid']))
 	$defaultuser->getUser($uid);
+	if($defaultuser->isAdmin()){
+		 //header('Location: books.php');die();
+			echo "<script>
+			window.location='/models/books.php';
+			</script>";
+		}
+	//die(print_r($defaultuser));
 	//else
 	//	$defaultuser->getUser(002); // just put dummy value
 ?>

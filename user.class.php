@@ -14,17 +14,13 @@ require( './connector.php' );
 
 	function setId($val){
 		$this->id=$val;
-		
 	}
 
 	function setName($val){
-
 		$this->name = $val;
 	}
 
-
 	function setAge($val){
-
 		$this->age = $val;
 	}
 
@@ -41,17 +37,14 @@ require( './connector.php' );
 		$this->email_address = $val;
 	}
 	function setTransactionNumber($val){
-
 		$this->transaction_number = $val;
 	}
 	
 	function setPassword($val){
-
 		$this->password = $val;
 	}
 	
 	function setType($val){
-
 		$this->type = $val;
 	}
 
@@ -81,7 +74,7 @@ require( './connector.php' );
 	}
 	function getPhoneNumber(){
 		return $this->phone_number;
-}
+	}
 	function getEmailAddress(){
 
 		return $this->email_address;
@@ -92,6 +85,20 @@ require( './connector.php' );
 		return $this->password;
 
 	}
+	function isAdmin(){
+
+		$flagadmin = false;
+		$uid = $this->getId();
+		$results = mysql_query("select Type from user where User_Id = $uid");
+		
+		if(mysql_num_rows($results) > 0){
+			$row = mysql_fetch_row($results);
+		}
+		 if ($row[0] == "admin")
+		    		$flagadmin = true;
+
+				return $flagadmin;
+			}
 	
 	function getType(){
 		//die($this->type);

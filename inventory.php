@@ -52,6 +52,7 @@
 	jQuery(document).ready(function($) {
     	$('#tmissing').dataTable();
     	$('#tdamage').dataTable();
+    	    	$('#told').dataTable();
     	$('#ready_').dataTable();
     	$('#myTab a:last').tab('show');
 	} );
@@ -62,9 +63,12 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-  <?php //require('./header.php'); ?>
+  <?php require('./header.php'); ?>
+
       <!-- Begin page content -->
       <div class="container" style="background:#fff;padding:20px;">  
+      	 
+      	 <h2> Inventory </h2>
 
       	<?php
       		$book_controller = new Book();

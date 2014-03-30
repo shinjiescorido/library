@@ -147,14 +147,15 @@ function saveBook(){
 		$category = $this->getCategory();
 		
 		if(!$this->getId()){
-		mysql_query("INSERT INTO `library`.`books` (`Book_Id`, `Title`, `Author`, `ISBN`, `Publisher`, `Location`, `Status`,`condition`, `Category`)".
-		" VALUES (NULL, '$title', '$author', '$author', '$publisher', '$location', 0,0, '$category');
+			$today = date('Y-m-d 00:00:00');
+mysql_query("INSERT INTO `library`.`books` (`Book_Id`, `Title`, `Author`, `ISBN`, `Publisher`, `Location`, `Status`,`condition`, `Category`,`Date_Created`)".
+		" VALUES (NULL, '$title', '$author', '$author', '$publisher', '$location', 0,0, '$category','$today');
 		")or die(mysql_error());
 		$res_ = mysql_query("SELECT `Book_Id` FROM `books` WHERE `Title` = '$title' AND `Author` = '$author'");
 	return mysql_fetch_object($res_)->Book_Id;
 	}else{
 	$bookid = $this->getId();
-
+//die($status);
 		$res = mysql_query("UPDATE `library`.`books` SET ". 
 "`Author` = '$author', ".
 "`Title` = '$title', ".

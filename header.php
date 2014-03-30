@@ -22,6 +22,7 @@ require( './user.class.php' );
 	$defaultuser = new User();
 	//$defaultuser->getUser(0000000002);
 	//$defaultuser->getUserList();
+	//die()
 	if($_POST['forlog']){
 		$idnum = $_POST['idnum'];
 		$pass = $_POST['password'];
@@ -32,8 +33,9 @@ $result = mysql_query("select User_Id from user where Id_Number = '$idnum' && Pa
 	//die(mysql_num_rows($result));
 	if(mysql_num_rows($result) > 0){
 		$rows = mysql_fetch_row($result);
-	
+		//	die(print_r($rows));
 		$_SESSION['userid'] = $rows[0];
+		//die($_SESSION['userid']);
 	}
 
 
@@ -68,17 +70,21 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 		return $flagloggedin;
 	}
 
-	//echo (isloggedin())? 'loggedin' : 'loggedout';
-	//echo (isadmin())? 'Hi admin' : 'Hi User';
+// 	echo (isloggedin())? 'loggedin' : 'loggedout';
+// echo (isadmin())? 'Hi admin' : 'Hi User';
+// 	die();
 	if(!isLoggedIn()){
-
+		//die('ddd');
 	 ?>
 
 	 <script>
-	 window.location="/models/";
+	 //alert('ddd');
+	window.location="/models/";
 	 </script>
 
-	<?php }else{ ?>
+	<?php }else{ 
+		//die('555');
+		?>
 
 <div class="navbar navbar-default navbar-static-top">
       <div class="container">
@@ -88,7 +94,7 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">LIBRARY SYSTEM</a>
+          <a class="navbar-brand" href="#">SJSM Library System</a>
         </div>
         <div class="navbar-collapse collapse">
          <ul class="nav navbar-nav">
@@ -96,10 +102,18 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
             <li class=""><a href="/models/userCopy.php">User profile</a></li>
 			<li class=""><a href="/models/browse.php">Browse</a></li>
 			<?php } else { ?>
-			<li class=""><a href="/models/books.php">Book Management</a></li>
+			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			Book Management <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="/models/books.php">All Books</a></li>
+			<li class=""><a href="/models/import.php">Import Books</a></li>
+            
+            	</ul>
+			</li>
 			<li class=""><a href="/models/issue.php">Issue</a></li>
-			<li class=""><a href="/models/transaction.php">Return</a></li>
+			<li class=""><a href="/models/returnBooks.php">Return</a></li>
 			<li class=""><a href="/models/users.php">Accounts Manager</a></li>
+
 			<!-- mao ni ang ktong borrow og reserve books -->
 			<li class=""><a href="/models/inventory.php">Inventory</a></li>
 

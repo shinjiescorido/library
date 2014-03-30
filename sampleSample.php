@@ -7,27 +7,23 @@
 
     <title>BOOKS</title>
 
-   <!-- Bootstrap core CSS -->
+    <!-- Bootstrap core CSS -->
     <link href="stylesheets/bootstrap.css" rel="stylesheet">
     <!-- Custom stylesheets for this template -->
     <link href="stylesheets/sticky-footer-navbar.css" rel="stylesheet">
  <link href="stylesheets/navbar-static-top.css" rel="stylesheet">
  <link href="stylesheets/screen.css" rel="stylesheet">
 
+ <link href="/css/bootstrap.min.css" rel="stylesheet">
+ <link href="/css/bootstrap.css" rel="stylesheet">
+ <script type="text/javascript" src="bootstrap-3/js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="bootstrap-3/js/bootstrap.js"></script>
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="/javascripts/html5shiv.js"></script>
       <script src="/javascripts/respond.min.js"></script>
     <![endif]-->
-<style type="text/css" title="currentStyle">
-			@import "dataTables/media/css/demo_page.css";
-			@import "dataTables/media/css/demo_table.css";
-</style>
-
-<script type="text/javascript" language="javascript" src="dataTables/media/js/jquery.js"></script>
-<script type="text/javascript" language="javascript" src="bootstrap-3/js/bootstrap.min.js"></script>
-<script type="text/javascript" language="javascript" src="dataTables/media/js/jquery.dataTables.js"></script>
-
   </head>
 
   <body bgcolor="#660000" style="background-color:#660000">
@@ -36,14 +32,9 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-  <?php require('./header.php'); ?>
-
+  <?php //require('./header.php'); ?>
       <!-- Begin page content -->
-      <div class="container" style="background:#fff;padding:20px;">
-
-      <h2> All Books </h2>  
-
-
+      <div class="container">  
 
 
 <?php
@@ -55,20 +46,15 @@ if($_POST){
 							$rows = $_book->findBook($_POST['searchbook'],$_POST['search_option']);
 					}else{
 							$_book = new Book();
-
+							
 							if(isset($_POST['bid']))
 							$_book->findOneBook($_POST['bid']);
-							if(isset($_POST['status'])){
-								//die($_POST['status']);
-								$_book->setStatus($_POST['status']);
-							}
 							$_book->setTitle($_POST['title']);
 							$_book->setPublisher($_POST['publisher']);
 							$_book->setIsbn($_POST['isbn']);
 							$_book->setAuthor($_POST['author']);
 							$_book->setCategory($_POST['category']);
 							$_book->setLocation($_POST['location']);	
-							//die($_book->getStatus());
 							$nbid = $_book->saveBook();
 $rows = $_book->findBook($_book->getId(),'Book_Id');
 $allowedExts = array("jpeg", "jpg");
@@ -129,28 +115,36 @@ $rows = $_book->getList(1);
 
 	<input type="submit" value="search" style="border:1px solid #000" />&nbsp;
 	<?php //if($_SESSION['userid']) { ?>
-		<a data-toggle='modal' href="#add_book" class="btn btn-primary" style="float:right; color:black">Add Book</a>
+		<a data-toggle='modal' href="add_book" class="btn btn-primary" style="float:right; color:black">Add Book</a>
 		<br>
 	<?php// } ?>
 
 	
  </form>
- 	<div id='add_book' class='modal fade' style='text-align:left' tabindex='-1' role='dialog' aria-hidden='true'>
-          <!-- <pre class="pre-scrollable">-->
-            <div class='modal-header'>
-              <a class='close' data-dismiss='modal'>×</a>
-              <h3>Book Information</h3>
-            </div>
-            <div class='modal-body'>
-				<form class="form-signin" action="" method="post" onsubmit='return true;' accept-charset="utf-8" enctype="multipart/form-data">
+ 	<div class="modal fade" id="add_book" role="dialog">
+	<div class="modal-dailog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class='close' data-dismiss='modal'>x</a>
+				<p>Book Information</p>
+			</div>
+			
+			<div class="modal-body">
+				<form class="form-signin" action="" method="post" onsubmit='return true;' accept-charset="utf-8">
 			 <h2 class="form-signin-heading"></h2>
 				
-				Book Title <input name="title" value="" class="form-control" placeholder="Book Title" required /><br />
-				<input type="file" class="form-control" placeholder="Book Image" name="file" id="file" />
-				Publisher <input name="publisher"  value="" class="form-control" placeholder="Publisher" autofocus required /><br />		
-				ISBN <input name="isbn"  value="" class="form-control" placeholder="ISBN" required /><br />				
-				Author <input name="author" value="" class="form-control" placeholder="Author" required /><br />
-				Catergory <select name="category" class="form-control" required>
+				Book Title: <br /> 
+				<input name="title" value="" class="form-control" placeholder="Book Title" required /><br />
+				Publisher: <br /> 
+				<input name="publisher"  value="" class="form-control" placeholder="Publisher" autofocus required /><br />		
+				ISBN: <br /> 
+				<input name="isbn"  value="" class="form-control" placeholder="ISBN" required /><br />				
+				Author: <br />
+				 <input name="author" value="" class="form-control" placeholder="Author" required /><br />
+				Status: <br /> 
+				<input name="status" value="" class="form-control" placeholder="Status" required /><br />
+				Catergory: <br /> 
+				<select name="category" class="form-control" required>
 					<?php
 						foreach($catLists as $cat){
 							echo "<option value='{$cat->C_Id}'>{$cat->Title}</option>";
@@ -158,16 +152,19 @@ $rows = $_book->getList(1);
 					?>
 					
 					
-				</select>
-				Location <input name="location"  value="" class="form-control" placeholder="Location" required /><br />				
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
+				</select><br/>
+				Location: <br />
+				<input name="location"  value="" class="form-control" placeholder="Location" required /><br />				
+				<br /> <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
 			</form>		
-            </div>
-            <div class='modal-footer'>
-              
-              <a href='#' class='btn' data-dismiss='modal'>Close</a>
-            </div>
+
+			<div class="modal-footer">
+				<a class="btn btn-primary" data-dismiss="modal">Close</a>
+			</div>
+		</div>
 	</div>
+</div>
+</div>
  <table cellpadding="5" cellspacing="5" style="" class="table table-hover table-condensed">
 	<tr style="background:grey" class="table-hover">
 		<td style="text-transform:uppercase">ID</td>
@@ -183,7 +180,6 @@ $rows = $_book->getList(1);
 	</tr>
 <?php	
 if($rows){
-	//die(print_r($rows));
 foreach ($rows as $row) {
 echo "<tr style='background:#fff'>";
 	echo "<td><a data-toggle='modal' href='#catalog_{$row->Book_Id}'>".$row->Book_Id."</a>";
@@ -200,7 +196,7 @@ echo "<tr style='background:#fff'>";
 				<li><strong>Publisher: </strong><span>{$row->Publisher}</span></li>
 				<li><strong>Location: </strong><span>{$row->Location}</span></li>
 				<li><strong>Category: </strong><span>{$row->Category}</li>
-								
+				<li><strong>Stocks: </strong><span></span></li>				
 			  </ul>		        
             </div>
             <div class='modal-footer'>
@@ -226,13 +222,6 @@ echo "<tr style='background:#fff'>";
 				<input name='bid' id='bid' value='{$row->Book_Id}' type='hidden' required/><br />			
 				Title: <input name='title' id='title' value='{$row->Title}' class='form-control' placeholder='Book Title' required/><br />
 				Publisher: <input name='publisher' id='publisher' value='{$row->Publisher}' class='form-control' placeholder='Publisher' autofocus required/><br />		
-				Status: <select name='status' class='form-control'>
-				<option value='0' "; echo ($row->Status == 0)?"selected='selected'":""; echo ">good</option>
-				<option value='1' "; echo ($row->Status == 1)?"selected='selected'":""; echo ">missing</option>
-				<option value='2' "; echo ($row->Status == 2)?"selected='selected'":""; echo ">damage</option>
-				<option value='3' "; echo ($row->Status == 3)?"selected='selected'":""; echo ">old</option>
-				<option value='4' "; echo ($row->Status == 4)?"selected='selected'":""; echo ">archived</option>
-				</select>
 				ISBN: <input name='isbn' id='isbn' value='{$row->ISBN}' class='form-control' placeholder='ISBN' /><br />				
 				Author: <input name='author' id='author' value='{$row->Author}' class='form-control' placeholder='Author' required
 				/><br />	";			
@@ -287,5 +276,8 @@ echo "</tr>";
 		}
 	}
 </script>
+
+<script src="js/jquery.min.js"></script>
+<script src="bootstrap-3/js/modal.js"></script>	
   </body>
 </html>

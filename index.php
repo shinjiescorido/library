@@ -66,13 +66,13 @@
       <div class="container">  
         <div class="row" style="width:600px;padding:20px;border:1px solid #ccc;margin:auto;">
 
-          <form style="text-align:center" class="form-horizontal" role="form" method="post" action="/models/users.php">
+          <form style="text-align:center" class="form-horizontal" role="form" method="post" action="/models/userCopy.php">
            <h2 class="form-signin-heading" style="">Sign In</h2>
             <div class="form-group">
                 <input type="hidden" name = "forlog" value="1" />
                 <a style="color:white"><strong>
                   <div class="">
-                    <input type="text" id="username" class="form-control" placeholder="Id Number">
+                    <input type="text" name="idnum" id="username" class="form-control" placeholder="Id Number">
                     <span class="help-block"></span>
                 </div>
             </div>

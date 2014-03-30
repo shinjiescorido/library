@@ -1,4 +1,4 @@
-<?php session_start();?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
@@ -66,11 +66,14 @@ var oTable = $('#booktable').dataTable( {
     <div id="wrap">
 
       <!-- Fixed navbar -->
-  <?php //require('./header.php');
-require('./user.class.php');
-   ?>
+  <?php require('./header.php');
+//require('./user.class.php');
+ ?>
+    
       <!-- Begin page content -->
       <div class="container" style="background:#fff;padding:20px;"> 
+<h2> Issue </h2>
+
         	<?php
 	if(isset($_POST['bookid'])){
 		require('./transaction.class.php');

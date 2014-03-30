@@ -1,4 +1,5 @@
-<?php require( './book.class.php' ); ?>
+<?php session_start();
+require( './book.class.php' ); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
@@ -66,10 +67,13 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-    	
+<?php require('./header.php');
+//require('./user.class.php');
+?>
 	<!-- Begin page content -->
-      <div class="container">  
+      <div class="container" style="background:#fff;padding:20px;">  
 
+      	<h2> Return </h2>
 
 	<div class="container">
 		
