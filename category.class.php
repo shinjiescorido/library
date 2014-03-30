@@ -15,23 +15,25 @@ function setId($val){
 }
 
 function setTitle($val){
-	$this->$Title = $val;
+	//die($val);
+	$this->Title = $val;
+
 }
 
 function setDescription($val){
-	$this->$Description = $val;
+	$this->Description = $val;
 }
 
 
 function getId(){
-		return $this->id;
+		return $this->C_Id;
 	}
 function getTitle(){
-		return $this->title;
+		return $this->Title;
 	}
 function getDescription(){
-		return $this->description;
-	}	
+		return $this->Description;
+	}
 
 
 function getCategoryLists(){
@@ -46,22 +48,14 @@ $result = mysql_query("select * from `library`.`category`")or die(mysql_error())
 			//die();
 }
 
-function moveCategoryToObject($r){
-	
-	$this->setId($id_);
-	$this->setTitle($title);
-	$this->setDescription($des);
-	return $this;
-
-
-}
 
 function saveCategory(){
 
 	$title = $this->getTitle();
 	$description = $this->getDescription();
+//	die("INSERT INTO `category` (`C_Id`, `Title`, `Description`) VALUES (NULL, '$title', '$description')");
 mysql_query("INSERT INTO `category` (`C_Id`, `Title`, `Description`) VALUES (NULL, '$title', '$description')") 
 	or die(mysql_error());
-	}	
+	}
 
 } ?>

@@ -296,7 +296,7 @@ $row->action = "<a data-toggle='modal' href='#reserve' data-id='{$row->Book_Id}'
 function getList($sortVal){
 $resultArray = array();
 	/* get all book sorted according to sortVal and return all results as an array */
-	$result = mysql_query("select * from `library`.`books`")or die(mysql_error());
+	$result = mysql_query("select * from `library`.`books` WHERE `condition` != 3")or die(mysql_error());
 			while ( $row = @mysql_fetch_object( $result ) ) {
 				$resultArray[] = $row;
 			}

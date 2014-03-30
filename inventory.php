@@ -52,9 +52,9 @@
 	jQuery(document).ready(function($) {
     	$('#tmissing').dataTable();
     	$('#tdamage').dataTable();
-    	    	$('#told').dataTable();
+    	$('#told').dataTable();
     	$('#ready_').dataTable();
-    	$('#myTab a:last').tab('show');
+    	// $('#myTab a:last').tab('show');
 	} );
 </script>
   <body bgcolor="#660000" style="background-color:#660000">
@@ -80,15 +80,6 @@
       		$book_damaged = $book_controller2->getBookBycondition(2);
       		$book_old = $book_controller3->getBookBycondition(3);
       		$book_ready = $book_controller4->getBookBycondition(0);
-      		
-      		/*foreach ($r as $row) {
-      			$row = $book_missing->mergeArrayToBook($row);
-      			      		$book_missing->display();
-      			      		echo "<hr />";
-      		}*/
-
-
-
       	 ?>
 
       	 			<ul class="nav nav-tabs" id="myTab">

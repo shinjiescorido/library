@@ -112,7 +112,7 @@ else
 }else{
 $_book = new Book();
 $rows = $_book->getList(1);
-//$_book->getCategoryName();
+//$_book->getCategoryNagetListme();
 
  }
  $_book_c = new Book();
@@ -128,22 +128,22 @@ $rows = $_book->getList(1);
 	</select>
 
 	<input type="submit" value="search" style="border:1px solid #000" />&nbsp;
-	<?php //if($_SESSION['userid']) { ?>
 		<a data-toggle='modal' href="#add_book" class="btn btn-primary" style="float:right; color:black">Add Book</a>
 		<br>
-	<?php// } ?>
 
 	
  </form>
  	<div id='add_book' class='modal fade' style='text-align:left' tabindex='-1' role='dialog' aria-hidden='true'>
-          <!-- <pre class="pre-scrollable">-->
+          
             <div class='modal-header'>
               <a class='close' data-dismiss='modal'>×</a>
               <h3>Book Information</h3>
             </div>
+
             <div class='modal-body'>
 				<form class="form-signin" action="" method="post" onsubmit='return true;' accept-charset="utf-8" enctype="multipart/form-data">
 			 <h2 class="form-signin-heading"></h2>
+
 				
 				Book Title <input name="title" value="" class="form-control" placeholder="Book Title" required /><br />
 				<input type="file" class="form-control" placeholder="Book Image" name="file" id="file" />
@@ -163,6 +163,7 @@ $rows = $_book->getList(1);
 				<button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
 			</form>		
             </div>
+        
             <div class='modal-footer'>
               
               <a href='#' class='btn' data-dismiss='modal'>Close</a>

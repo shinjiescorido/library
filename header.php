@@ -107,6 +107,7 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 				<ul class="dropdown-menu">
 					<li><a href="/models/books.php">All Books</a></li>
 			<li class=""><a href="/models/import.php">Import Books</a></li>
+			<li class=""><a href="/models/category.php">Book Categories</a></li>
             
             	</ul>
 			</li>

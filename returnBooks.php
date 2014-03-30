@@ -7,12 +7,13 @@ require( './book.class.php' ); ?>
 
     <title>Account Manager</title>	
 
-    <!-- Bootstrap core CSS -->
+   <!-- Bootstrap core CSS -->
     <link href="stylesheets/bootstrap.css" rel="stylesheet">
     <!-- Custom stylesheets for this template -->
     <link href="stylesheets/sticky-footer-navbar.css" rel="stylesheet">
  <link href="stylesheets/navbar-static-top.css" rel="stylesheet">
  <link href="stylesheets/screen.css" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="/javascripts/html5shiv.js"></script>
@@ -21,17 +22,13 @@ require( './book.class.php' ); ?>
 <style type="text/css" title="currentStyle">
 			@import "dataTables/media/css/demo_page.css";
 			@import "dataTables/media/css/demo_table.css";
-			.returnedbook td{
-				padding: 10px;
-				text-align: center;
-			}
-			.returnedbook th{
-				padding: 15px;
-				text-align: center;
-			}
-		</style>
-		<script type="text/javascript" language="javascript" src="dataTables/media/js/jquery.js"></script>
-		<script type="text/javascript" language="javascript" src="dataTables/media/js/jquery.dataTables.js"></script>
+</style>
+
+<script type="text/javascript" language="javascript" src="dataTables/media/js/jquery.js"></script>
+<script type="text/javascript" language="javascript" src="bootstrap-3/js/bootstrap.min.js"></script>
+<script type="text/javascript" language="javascript" src="dataTables/media/js/jquery.dataTables.js"></script>
+		
+
 		<script type="text/javascript" charset="utf-8">
 	
 
@@ -75,7 +72,6 @@ require( './book.class.php' ); ?>
 
       	<h2> Return </h2>
 
-	<div class="container">
 		
 <div class="allreturned">
 							<?php 
