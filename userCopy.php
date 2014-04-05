@@ -43,7 +43,7 @@ border-color: #237A12;
 
   </head>
 
-  <body bgcolor="" style="">
+  <body bgcolor="#660000" style="background-color:#660000">
   <!--	<img src="images/banner.jpg" width="1010px" height="150px"/>-->
     <!-- Wrap all page content here -->
     <div id="wrap">
@@ -91,7 +91,7 @@ require( './transaction.class.php' );
 			
 			<?php
 				$trans = new Transaction();
-				$translist = $trans->getTransactionsByUserId($defaultuser->getId());
+				$translist = $trans->getBorrowByUserId($defaultuser->getId());
 				//print_r($translist);
 				$results = mysql_query("select * from user where User_Id = $uid");
 		   
@@ -99,8 +99,8 @@ require( './transaction.class.php' );
 
 		   ?>
 		   <br />
-		   <button class="btn btn-success" style="<?php echo (isset($_SESSION['userid']))?'display:none;' : ''; ?>float:right; font-color:black"><a href="/models/editUser.php" >Edit</a></button>
-
+		   <button class="btn btn-success" style="<?php (isset($_SESSION['userid']))?'display:none;' : ''; ?>float:right; font-color:black"><a href="/models/editUser.php" >Edit</a></button>
+	<?php if(count((array)$translist) > 0) { ?> 
 		   <hr>
 
 		<h3>Borrowed Books</h3>
@@ -133,7 +133,51 @@ echo "</tr>";
 	?>
 	</table>
 	<br />
+<?php } ?>
+	<!-- * * * * * * * * * * * * y * * * * * * * * * * * * * -->
+	<?php
+				$transr = new Transaction();
+				$translistr = $transr->getReserveByUserId($defaultuser->getId());
+				//print_r($translist);
+				$results = mysql_query("select * from user where User_Id = $uid");
+		   
 
+
+		   ?>
+		   <hr>
+	<?php if(count((array)$translistr) > 0) { ?> 
+
+		<h3>Reserved Books</h3>
+	<table cellpadding="5" cellspacing="5" style="" class="table table-hover table-condensed">
+	<tr style="background:grey" class="table-hover">
+		<td style="text-transform:uppercase">ID</td>
+		<td style="text-transform:uppercase">Book Title</td>
+		<td style="text-transform:uppercase">Date Reserved</td>
+		<td style="text-transform:uppercase">Return Date</td>
+		<td style="text-transform:uppercase">Penalty</td>
+		<td style="text-transform:uppercase">Status</td>
+	</tr>
+	<?php
+	
+			foreach($translistr as $tlist){
+			$today = date("d");
+			
+				$penalty = floor((time() - strtotime($tlist->Date_Returned))/86400);
+				echo "<tr style='background:#fff'>";
+					echo "<td>".$tlist->T_Id."</td>";
+					echo "<td>".$tlist->Title."</td>";
+					echo "<td>".date("Y-m-d",strtotime($tlist->Date_Claimed))."</td>";
+echo ($tlist->Status == 1) ? "<td>".date("Y-m-d",strtotime($tlist->Date_Returned))."</td>" : "<td>Nan</td>";
+					echo ($penalty > 0)?"<td> Php ".($penalty*10).".00 </td>":"<td> Php 0.00 </td>";
+echo ($tlist->Status == 1)? "<td>not yet returned</td>":"<td>Reserved</td>";
+
+echo "</tr>";
+					//echo ($tlist->Status)? "<td> not yet returned</td>":"<td>returned</td>";
+			}
+	?>
+	</table>
+	<br />
+<?php } ?>
 
 		
 	</div>

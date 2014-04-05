@@ -153,7 +153,8 @@ function saveUser(){
 		$phone_number = $this->getPhoneNumber();
 		$email_address = $this->getEmailAddress();
 	//	$transaction_number = $this->getTransactionNumber();
-		$password = $this->getPassword();
+		$password = md5($this->getPassword());
+		$id_number = $this->getIdNumber();
 		$types = $this->getType();
 		
 	mysql_query("INSERT INTO `library`.`user` (`User_Id`, `Name`, `Age`, `Address`, `Phone_Number`, `Email_Address`,`Password`,`Type`,`Id_Number`)".
@@ -162,6 +163,30 @@ function saveUser(){
 	" VALUES (NULL, '$name', '$age', '$address', '$phone_number', '$email_address', '$password','$types','$id_number');
 	");
 
+	}
+	function _saveUser(){
+
+	/* save the book as new row in book table if id is defined else save the book object as update */
+
+		$name = $this->getName();
+		$age = $this->getAge();
+		$address = $this->getAddress();
+		$phone_number = $this->getPhoneNumber();
+		$email_address = $this->getEmailAddress();
+	//	$transaction_number = $this->getTransactionNumber();
+		$password = $this->getPassword();
+		$id_number = $this->getIdNumber();
+		
+		$types = $this->getType();
+
+	mysql_query("INSERT INTO `library`.`user` (`User_Id`, `Name`, `Age`, `Address`, `Phone_Number`, `Email_Address`,`Password`,`Type`,`Id_Number`)".
+	" VALUES (NULL, '$name', '$age', '$address', '$phone_number', '$email_address', '$password','$types','$id_number');
+	")or die("INSERT INTO `library`.`user` (`User_Id`, `Name`, `Age`, `Address`, `Phone_Number`, `Email_Address`,`Password`,`Type`,`Id_Number`)".
+	" VALUES (NULL, '$name', '$age', '$address', '$phone_number', '$email_address', '$password','$types','$id_number');
+	");
+
+$res_ = mysql_query("SELECT `User_Id` FROM `user` WHERE `Name` = '$Id_Number' AND `Author` = '$author'");
+	return mysql_fetch_object($res_)->User_Id;
 	}	
 function findUser($val){
 $result = mysql_query("select * from `library`.`user` where `Name` = '$val'")or die(mysql_error());

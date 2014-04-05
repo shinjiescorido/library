@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php require( './book.class.php' ); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +64,9 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-    	
+    	<?php require('./header.php');
+//require('./user.class.php');
+ ?>
 	<!-- Begin page content -->
       <div class="container">  
 

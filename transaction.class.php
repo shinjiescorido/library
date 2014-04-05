@@ -92,6 +92,41 @@ require( './connector.php' );
 			
 			return $resultArray;
 	}
+function getBorrowByUserId($userid){
+	$resultArray = array();
+
+
+		$result = mysql_query("	SELECT transaction . * , books.Title".
+								 " FROM transaction, books".
+								 " WHERE User_Id = '$userid'". 
+								 " AND transaction.Status = 1".
+								 " AND transaction.Book_Id = books.Book_Id")
+								 or die
+								 (mysql_error());
+		while ( $row = @mysql_fetch_object( $result ) ) {
+				$resultArray[] = $row;
+			}			
+			
+			return $resultArray;
+	}
+
+	function getReserveByUserId($userid){
+	$resultArray = array();
+
+
+		$result = mysql_query("	SELECT transaction . * , books.Title".
+								 " FROM transaction, books".
+								 " WHERE User_Id = '$userid'". 
+								 " AND transaction.Status = 2".
+								 " AND transaction.Book_Id = books.Book_Id")
+								 or die
+								 (mysql_error());
+		while ( $row = @mysql_fetch_object( $result ) ) {
+				$resultArray[] = $row;
+			}			
+			
+			return $resultArray;
+	}
 
 	function getTransactions(){
 	$resultArray = array();
@@ -141,6 +176,25 @@ require( './connector.php' );
 	//	die("UPDATE  `books` SET  `Status` =  $type WHERE  `books`.`Book_Id` = $bookid");
 	$today = date('Y-m-d 00:00:00');
 	$return = date('Y-m-d 00:00:00',strtotime($today . '+10 days'));
+	// here if 22
+$result_ = mysql_query("SELECT count( * ) AS BorrowerOrReserver"
+		." FROM `transaction`"
+		." WHERE `User_Id` = '$userid' AND `Book_Id` = '$bookid'") or die (mysql_error());
+	$data=mysql_fetch_assoc($result_);
+	//die(print_r($data));
+$flaggers = $data['BorrowerOrReserver'];
+//die($flaggers);
+	if($flaggers == 0){
+		// here 23
+		$_type_ = ($type == 1)?'Borrows':'Reservations';
+		$_result_ = mysql_query("SELECT count( * ) AS ToalBorrowOrReserve"
+		." FROM `transaction`"
+		." WHERE `User_Id` = '$userid' AND `Status` = '$type'") or die (mysql_error());
+	$data_=mysql_fetch_assoc($_result_);
+	//die(print_r($data));
+$flaggers_ = $data_['ToalBorrowOrReserve'];
+	if($flaggers_ > 1)
+		return "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Error! </strong>The Student has already reach his/her maximum number of ".$_type_." (2)</div>";
 mysql_query("INSERT INTO `library`.`transaction` ".
 	"(`T_Id`, `Date_Claimed`, `Date_Returned`, `Status`, `Stocks`, `Book_Id`, `User_Id`) ".
 		"VALUES ".
@@ -152,6 +206,9 @@ mysql_query("INSERT INTO `library`.`transaction` ".
 mysql_query("UPDATE  `books` SET  `Status` =  $type WHERE  `books`.`Book_Id` = $bookid")or die(mysql_error());
 	return "<div class='alert alert-success'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Success!</strong> Book has been ".
 $_type."</div>";
+}else{
+	return "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Error! </strong>The User has already borrowed/reserved the selected book.</div>";
+} // end of if 22
 	}
 
 	function updateTransaction( $id, $value, $column ){

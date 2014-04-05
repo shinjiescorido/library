@@ -118,7 +118,7 @@ if($rows){
 
 foreach ($rows as $row) {
   ?>
-<div class="bookitem" style="height:300px;width:230px;border:1px solid #ccc;margin:20px;padding:15px;float:left;text-align:left">
+<div class="bookitem" style="height:240px;width:180px;border:1px solid #ccc;margin:20px;padding:15px;float:left;text-align:left">
     <div>
       <?php
       echo "<div class='modal fade' id='myModal-{$row->Book_Id}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'></div>";
@@ -126,11 +126,11 @@ foreach ($rows as $row) {
           {
 
 echo "<a data-toggle='modal' data-target='#myModal-{$row->Book_Id}' href='/models/displaybook.php?bookid={$row->Book_Id}'>";
-            echo "<img style='width:200px;height:200px;' src='./upload/img_{$row->Book_Id}.jpg' />";
+            echo "<img style='width:150px;height:160px;' src='./upload/img_{$row->Book_Id}.jpg' />";
             echo "</a>";
           }else{
 echo "<a data-toggle='modal' data-target='#myModal-{$row->Book_Id}' href='/models/displaybook.php?bookid={$row->Book_Id}'>";
-            echo "<img style='width:200px;height:200px;' src='./images/sample.jpg' />";
+            echo "<img style='width:150px;height:160px;' src='./images/sample.jpg' />";
             echo "</a>";
           }
           echo $row->Title;
@@ -155,7 +155,7 @@ echo "<a data-toggle='modal' data-target='#myModal-{$row->Book_Id}' href='/model
         <p class="text-muted credit">Implemented by: <a href="#">author</a></p>
       </div>
     </div>
-    
+
  <script src="javascripts/modal.js"></script>
   </body>
 </html>

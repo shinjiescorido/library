@@ -55,7 +55,7 @@
 		<h2>Accounts Manager</h2>
 
 <button class="btn btn-default btn-info" type="button"><a href="#reg" data-toggle='modal' style="color:black">Add user</a></button>	
-
+<a href="/models/importuser.php"> Import User </a>
 <div class = "userTable">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>

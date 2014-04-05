@@ -12,7 +12,7 @@
     <link href="stylesheets/sticky-footer-navbar.css" rel="stylesheet">
  <link href="stylesheets/navbar-static-top.css" rel="stylesheet">
  <link href="stylesheets/screen.css" rel="stylesheet">
- <link rel="stylesheet" href="css/jquery-ui.css">
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -22,13 +22,15 @@
 <style type="text/css" title="currentStyle">
 			@import "dataTables/media/css/demo_page.css";
 			@import "dataTables/media/css/demo_table.css";
-      .ui-autocomplete { z-index:9999 !important;}  
+
+
+.ui-autocomplete { z-index:9999 !important;}  
 </style>
 
 <script type="text/javascript" language="javascript" src="dataTables/media/js/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="bootstrap-3/js/bootstrap.min.js"></script>
 <script type="text/javascript" language="javascript" src="dataTables/media/js/jquery.dataTables.js"></script>
-		 <script src="js/jquery-ui.js"></script>
+		 <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 
   </head>
@@ -106,10 +108,10 @@ var oTable = $('#booktable').dataTable( {
   	"<div class='control-group'>".  
             "<label class='control-label' for='select01'>Student Name</label>". 
    //         "<div class='controls'><select class='form-control' name='sid'>".$userOptions."</select></div>".
-  	"<div class='controls'><input class='form-control tags'><input type='hidden' name='sid' /></div>".   
-    "<input class='idholder' type='hidden' name='bookid' />".
+  	"<div class='controls'><input class='form-control tags'><input class='idholder' /></div>".   
+    "<input class='bookidholder' type='hidden' name='bookid' />".
   	"<p>Borrowed books shall be returned in approximately 10 days from this date. Failure to do will have 10.00 penalty each day.</p>".
-  	"<input type='submit' value='Issue Book' class='btn btn-primary' style='float: right'/></div></form>".
+  	"<input type='submit' value='Issue Book' class='btn btn-primary' /></div></form>".
   	"</div>".
   	"</div>";
 
@@ -121,7 +123,6 @@ var oTable = $('#booktable').dataTable( {
     "<div class='control-group'>".  
     "<label class='control-label' for='select02'>Student Name</label>". 
    // "<div class='controls'><select id='select02' class='form-control' name='rid'>".$userOptions."</select></div>".
-    "<div class='controls'><input class='form-control tags'><input type='hidden' name='rid' /></div>".
     "<input class='idholder' type='hidden' name='rbookid' />".
     "<p>Reservations will start on the book's returned date.</p>".
     "<input type='submit' value='Reserve Book' class='btn btn-success' /></div></form>".
@@ -160,26 +161,36 @@ var oTable = $('#booktable').dataTable( {
         <p class="text-muted credit">Implemented by: <a href="#">author</a></p>
       </div>
     </div>
-    <script>
-                    <?php 
-     $userObj = new User();
-   $allUser = $userObj->getUserList();
-  // die($allUser);
- //  $userOptions = "";
-   echo "var tDatas = [";
-   foreach ($allUser as $user) {
-  // $userOptions = $userOptions . "<option value='{$user->User_Id}'>".$user->Name."</option>";
-    echo "{'label':'".$user->Name."','value':'".$user->Name."','id':'".$user->User_Id."'},";
-   }
-   echo "{'label':'___','value':'99999','id':9999}];";
-   echo " $( '.tags' ).autocomplete({".
-        "source: tDatas,".
-        "select : function(event,ui){ ".
-        "$(this).val(ui.item.label);".
-        "$(this).next().val(ui.item.id); }".
-        "});";
-?>
-    </script>
-     <script src="javascripts/modal.js"></script>
+ <script>
+$(function() {
+var availableTags = [
+"ActionScript",
+"AppleScript",
+"Asp",
+"BASIC",
+"C",
+"C++",
+"Clojure",
+"COBOL",
+"ColdFusion",
+"Erlang",
+"Fortran",
+"Groovy",
+"Haskell",
+"Java",
+"JavaScript",
+"Lisp",
+"Perl",
+"PHP",
+"Python",
+"Ruby",
+"Scala",
+"Scheme"
+];
+$( ".tags" ).autocomplete({
+source: availableTags
+});
+});
+</script>
   </body>
 </html>

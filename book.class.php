@@ -9,7 +9,8 @@ class Book{
 	var $location;
 	var $status;
 	var $category;
-	
+	var $condition;
+
 	function setDefaults(){
 	//	$this->id = '';
 		$this->title = 'the sample title';
@@ -19,6 +20,7 @@ class Book{
 		$this->location = 'the sample location';
 		$this->status = 'the sample status';
 		$this->category = 'the sample category';
+		$this->condition = 'the sample condition';
 		
 	}
 	function getDefaults(){
@@ -34,6 +36,7 @@ class Book{
 		echo "<br />location: ".$this->getLocation();
 		echo "<br />status: ".$this->getStatus();
 		echo "<br />category: ".$this->getCategory();
+		echo "<br />condition: ".$this->getCondition();
 		echo ($this->getCopies($this->getTitle()) > 1) ? "<br />Copies: ".$this->getCopies($this->getTitle()) : '';
 	}
 	function getCopies($val){
@@ -54,6 +57,7 @@ return ($data['copies'])?$data['copies']:false;
 		echo "<br />location: ".$this->getLocation();
 		echo "<br />status: ".$this->getStatus();
 		echo "<br />category: ".$this->getCategory();
+		echo "<br />condition: ".$this->getCondition();
 	}
 	/* setters */
 	function setId($val){
@@ -80,6 +84,10 @@ return ($data['copies'])?$data['copies']:false;
 	function setCategory($val){
 		$this->category = $val;
 	}
+	function setCondition($val){
+		$this->condition = $val;
+	}
+
 
 	/* getters */
 	function getId(){
@@ -112,6 +120,9 @@ return ($data['copies'])?$data['copies']:false;
 		function getCategory(){
 		return $this->category;
 	}
+		function getCondition(){
+		return $this->condition;
+	}
 	
 function getCatLists(){
 	$resultArray = array();
@@ -133,6 +144,7 @@ function mergeArrayToBook($row){
 		$this->location = $row->Location;
 		$this->status = $row->Status;
 		$this->category = $row->Category;
+		$this->condition = $row->Condition;
 }
 function saveBook(){
 
@@ -145,11 +157,12 @@ function saveBook(){
 		$location = $this->getLocation();
 		$status = $this->getStatus();
 		$category = $this->getCategory();
+		$condition = $this->getCondition();
 		
 		if(!$this->getId()){
 			$today = date('Y-m-d 00:00:00');
-mysql_query("INSERT INTO `library`.`books` (`Book_Id`, `Title`, `Author`, `ISBN`, `Publisher`, `Location`, `Status`,`condition`, `Category`,`Date_Created`)".
-		" VALUES (NULL, '$title', '$author', '$author', '$publisher', '$location', 0,0, '$category','$today');
+mysql_query("INSERT INTO `library`.`books` (`Book_Id`, `Title`, `Author`, `ISBN`, `Publisher`, `Location`, `Status`,`Condition`, `Category`,`Date_Created`)".
+		" VALUES (NULL, '$title', '$author', '$isbn', '$publisher', '$location', 0,0, '$category','$today');
 		")or die(mysql_error());
 		$res_ = mysql_query("SELECT `Book_Id` FROM `books` WHERE `Title` = '$title' AND `Author` = '$author'");
 	return mysql_fetch_object($res_)->Book_Id;
@@ -163,7 +176,8 @@ mysql_query("INSERT INTO `library`.`books` (`Book_Id`, `Title`, `Author`, `ISBN`
 "`Publisher` = '$publisher', ".
 "`Location` = '$location', ".
 "`Status` = '$status', ".
-"`Category` = '$category' ".
+"`Category` = '$category', ".
+"`Condition`='$condition' ".
 " WHERE `books`.`Book_Id` ='$bookid'")or die(mysql_error());
 			if ($res){
 				return "saved successfully";
@@ -249,7 +263,7 @@ function getReturned($id){
 function getAllBooks(){
 $resultArray = array();
 	/* get all book sorted according to sortVal and return all results as an array */
-	$result = mysql_query("select * from `books` where `Status` < 2 && `condition` = 0")or die(mysql_error());
+	$result = mysql_query("select * from `books` where `Status` < 2 && `Condition` = 0")or die(mysql_error());
 	//die("select * from `books` where (`Status` = 0 || `Status` = 1) && `condition` = 0");
 	// $userObj = new User();
 	// $allUser = $userObj->getUserList();
@@ -270,11 +284,15 @@ $resultArray = array();
 				"</div>");*/
 	while ( $row = @mysql_fetch_object( $result ) ) {
 				//$condition_ = floor((time() - strtotime($row->penalty))/86400)*10;
-
+//die(print_r($row));
 				//$row->condition_ = ($penalty > 0)?$penalty:'0';
 				//$row->Status = ($row->Status)?'reserve':'borrow';
 				//$row->condition = ($row->condition)?'good':'damaged';	
 			//	$row->Category = $this->getCategoryName($row->Category);
+		$theTitle = $row->Title;
+//		die(print_r($theTitle));
+$row->Title = "<div class='modal fade' id='myModal-{$row->Book_Id}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'></div>".
+				" <a data-toggle='modal' data-target='#myModal-{$row->Book_Id}' href='/models/displaybook.php?bookid={$row->Book_Id}'>$theTitle</a>";
 if($row->Status != 1)
 $row->action = "<a data-toggle='modal' href='#issue' data-id='{$row->Book_Id}' class='btn btn-primary announce'>Issue book</a>";
 else
@@ -296,7 +314,8 @@ $row->action = "<a data-toggle='modal' href='#reserve' data-id='{$row->Book_Id}'
 function getList($sortVal){
 $resultArray = array();
 	/* get all book sorted according to sortVal and return all results as an array */
-	$result = mysql_query("select * from `library`.`books` WHERE `condition` != 3")or die(mysql_error());
+	/* $result = mysql_query("select * from `library`.`books` WHERE `Condition` != 3")or die(mysql_error());  -- commented, 0331*/
+	$result = mysql_query("select * from `library`.`books`")or die(mysql_error());
 			while ( $row = @mysql_fetch_object( $result ) ) {
 				$resultArray[] = $row;
 			}

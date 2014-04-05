@@ -110,9 +110,9 @@ require( './book.class.php' ); ?>
 			
 		?>
 		<tr>
-			<td>
-<a target="_blank" href="/models/userCopy.php?id=<?php echo $useritem->User_Id; ?>">
-	<?php echo $useritem->Book_Id; ?></a></td>
+			
+
+			<td><?php echo $useritem->Book_Id; ?></td>
 			<td><?php echo $useritem->Title; ?></td>
 			<td><?php echo $useritem->Author; ?></td>
 			<td><?php echo $useritem->Publisher; ?></td>

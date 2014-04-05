@@ -1,0 +1,58 @@
+var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substringRegex;
+    // an array that will be populated with substring matches
+    matches = [];
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str['value'])) {
+        // the typeahead jQuery plugin expects suggestions to a
+        // JavaScript object, refer to typeahead docs for more info
+        matches.push(str);
+      }
+    });
+    cb(matches);
+  };
+};
+var students = [{
+        "value": "Tyler Smith",
+        "firstname": "Tyler",
+        "lastname": "Smith",
+        "id": "33"
+    }, {
+        "value": "Tyler Wilson",
+        "firstname": "Tyler",
+        "lastname": "Wilson",
+        "id": "190"
+    }, {
+        "value": "Tyler Doe",
+        "firstname": "Tyler",
+        "lastname": "Doe",
+        "id": "347"
+    }, {
+        "value": "Tyler Carson",
+        "firstname": "Tyler",
+        "lastname": "Carson",
+        "id": "377"
+    }];
+
+$('input[name=students]').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 1
+},{
+  name: 'Students',
+  displayKey: 'value',
+  source: substringMatcher(students)
+}).on('typeahead:selected', function (object, datum) {
+    // Example: {type: "typeahead:selected", timeStamp: 1377890016108, jQuery203017338529066182673: true, isTrigger: 3, namespace: ""...}
+    //console.log(object);
+
+    // Datum containg value, tokens, and custom properties
+    $('input[name=FName]').val(datum.firstname);
+    $('input[name=LName]').val(datum.lastname);
+    $('input[name=ID]').val(datum.id);
+});

@@ -22,12 +22,12 @@
   </head>
   <script type="text/javascript" src="js/jquery11.min.js"></script>
   <script type="text/javascript" src="js/jquery.validate.min.js"></script>
-  
-<script>
+ 
+  <script>
   jQuery(document).ready(function($){
  $.validator.addMethod("password",function(value,element){
                 return this.optional(element) || /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/i.test(value);
-            },"Passwords must be with uppercase letters, lowercase letters and at least one number.");
+            },"Passwords must be with uppercase letters, lowercase letters and at least one number, 8-16 characters.");
 
         $('.form-horizontal').validate({
         rules: {
@@ -52,8 +52,35 @@
 
   });
 </script>
-  <body bgcolor = "" style="">
-   <img src="images/banner.jpg" width="1009px" height="180px"/> 
+
+<!--<script language="Javascript">
+
+      function validateForm(objForm){
+        //alert("In validate Form");
+
+        if(objForm.username.value.length==0){
+
+         // alert("Please enter the username!");
+          objForm.username.focus();
+          return false;
+
+        }
+
+         if(objForm.password.value.length==0){
+
+        //  alert("Please enter the password!");
+          objForm.password.focus();
+          return false;
+
+        }
+
+
+        return true;
+      }
+
+    </script>-->
+  <body bgcolor="#660000" style="background-color:#660000">
+   <img src="images/banner.jpg" width="1345px" height="180px"/> 
     <!-- Wrap all page content here -->
     <div id="wrap">
 
@@ -64,10 +91,17 @@
 
       <!-- Begin page content -->
       <div class="container">  
-        <div class="row" style="width:600px;padding:20px;border:1px solid #ccc;margin:auto;">
-
-          <form style="text-align:center" class="form-horizontal" role="form" method="post" action="/models/userCopy.php">
-           <h2 class="form-signin-heading" style="">Sign In</h2>
+        <div class="row" style="width:600px;padding:20px;border:1px solid #ccc;margin:auto;background:#fff">
+          <?php if(isset($_GET['e'])){
+                    //if($_GET['e']){
+                        echo "<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert'>&times;</a><strong>Sory, </strong>Wrong ID number or password</div>";
+                    // }else{
+                    //   unset($_SESSION['invalid']);
+                    }
+                  //}
+           ?>
+          <form style="text-align:center" class="form-horizontal"  role="form" method="post" action="/models/userCopy.php">
+           <h2 class="form-signin-heading" style="color: white">Sign In</h2>
             <div class="form-group">
                 <input type="hidden" name = "forlog" value="1" />
                 <a style="color:white"><strong>
@@ -84,11 +118,10 @@
                 </div>
             </div>
 
-                <a href="#" style="float: right">No account yet? Create one here!</a>
 
-                <label class="checkbox">
-                  <input type="checkbox" value="remember-me"> Remember me
-                </label>
+                <!--<label class="checkbox">
+                  <input type="checkbox" value="remember-me" style="color:black"> Remember me
+                </label>-->
             
              <span class="help-block"></span>
             <button type="submit" class="btn btn btn-primary btn-lg btn-block">Sign in</button>

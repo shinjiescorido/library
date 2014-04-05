@@ -25,7 +25,7 @@ require( './user.class.php' );
 	//die()
 	if($_POST['forlog']){
 		$idnum = $_POST['idnum'];
-		$pass = $_POST['password'];
+		$pass = md5($_POST['password']);
 		//$pass = md5($_POST['pass']);
 
 $result = mysql_query("select User_Id from user where Id_Number = '$idnum' && Password = '$pass'");
@@ -36,6 +36,8 @@ $result = mysql_query("select User_Id from user where Id_Number = '$idnum' && Pa
 		//	die(print_r($rows));
 		$_SESSION['userid'] = $rows[0];
 		//die($_SESSION['userid']);
+	}else{
+		//$_SESSION['invalid'] = true;
 	}
 
 
@@ -79,14 +81,13 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 
 	 <script>
 	 //alert('ddd');
-	window.location="/models/";
+	window.location="/models/?e=logerror";
 	 </script>
 
-	<?php }else{ 
-		//die('555');
+	<?php }else{		//die('555');
 		?>
 
-<div class="navbar navbar-default navbar-static-top">
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -99,29 +100,40 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
         <div class="navbar-collapse collapse">
          <ul class="nav navbar-nav">
          	<?php if(!isAdmin()){ ?>
-            <li class=""><a href="/models/userCopy.php">User profile</a></li>
-			<li class=""><a href="/models/browse.php">Browse</a></li>
+            <li class="active"><a href="/models/userCopy.php">User profile</a></li>
+			<li class=""><a href="/models/browse_books.php">Browse</a></li>
 			<?php } else { ?>
-			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
-			Book Management <b class="caret"></b></a>
+			<li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			Book Manager <b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="/models/books.php">All Books</a></li>
-			<li class=""><a href="/models/import.php">Import Books</a></li>
+			<li class=""><a href="/models/import.php">Import Books Catalogue List</a></li>
 			<li class=""><a href="/models/category.php">Book Categories</a></li>
             
             	</ul>
 			</li>
 			<li class=""><a href="/models/issue.php">Issue</a></li>
 			<li class=""><a href="/models/returnBooks.php">Return</a></li>
-			<li class=""><a href="/models/users.php">Accounts Manager</a></li>
+			<li class=""><a href="/models/reservedLists.php">Reservation Lists</a></li>
 
 			<!-- mao ni ang ktong borrow og reserve books -->
+			<li class=""><a href="/models/users.php">Accts. Manager</a></li>
 			<li class=""><a href="/models/inventory.php">Inventory</a></li>
+			
 
 			<?php } ?>
 
 		</ul>
           <ul class="nav navbar-nav navbar-right">
+			<?php if(isset($_SESSION['userid'])) { ?>
+			<li><a href="#">
+					<?php
+						$logged_user = new User();
+						$logged_user->getUser($_SESSION['userid']);
+						echo $logged_user->getName();
+					 ?>
+			</a></li>
+			<?php } ?>
 			<li><a href="/models/logout.php">Logout</a></li>
 			
 		 </ul>
