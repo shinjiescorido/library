@@ -1,5 +1,5 @@
-<?php 
-require( './user.class.php' ); 
+<?php
+require( './user.class.php' );
 //require( './transaction.class.php' );
 
 //die($_SESSION['userid']);
@@ -16,7 +16,7 @@ require( './user.class.php' );
 		$user->setType($_POST['type']);
 		$user->setIdNumber($_POST['id_number']);
 		$user->saveUser();
-		
+
 	}
 
 	$defaultuser = new User();
@@ -44,7 +44,7 @@ $result = mysql_query("select User_Id from user where Id_Number = '$idnum' && Pa
 
 
 	}
-	
+
 $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 //die($userid);
 //echo $userid;
@@ -65,7 +65,7 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 
 	function isLoggedIn(){
 		$flagloggedin = false;
-		
+
 		if($_SESSION['userid'])
 			$flagloggedin = true;
 
@@ -109,7 +109,7 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 					<li><a href="/models/books.php">All Books</a></li>
 			<li class=""><a href="/models/import.php">Import Books Catalogue List</a></li>
 			<li class=""><a href="/models/category.php">Book Categories</a></li>
-            
+
             	</ul>
 			</li>
 			<li class=""><a href="/models/issue.php">Issue</a></li>
@@ -119,7 +119,7 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 			<!-- mao ni ang ktong borrow og reserve books -->
 			<li class=""><a href="/models/users.php">Accts. Manager</a></li>
 			<li class=""><a href="/models/inventory.php">Inventory</a></li>
-			
+
 
 			<?php } ?>
 
@@ -135,7 +135,7 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 			</a></li>
 			<?php } ?>
 			<li><a href="/models/logout.php">Logout</a></li>
-			
+
 		 </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -144,13 +144,13 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 	<?php } ?>
 		<div id='reg' class='modal fade in' style='text-align:left'>
             <div class='modal-header'>
-             
+
               <h3>Add User</h3>
             </div>
             <div class='modal-body'>
-		 	<form class="form-signin" action="" method="post" onsubmit='return true;' accept-charset="utf-8">
-			<input type="hidden" name="forreg" value="1" />	
-			
+		 	<form class="form-signin" name="myForm" action="" method="post" onsubmit='return validateForm();' accept-charset="utf-8">
+			<input type="hidden" name="forreg" value="1" />
+
 			Full Name: <input name="name" id="name" value="" class="form-control" placeholder="Full Name" autofocus required /><br />
 			Age: <input name="age" id="age" value="" class="form-control" placeholder="Age" required /><br />
 			Address: <input name="address" id="address" value="" class="form-control" placeholder="Address" required /><br />
@@ -164,7 +164,7 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 		</form>
             </div>
             <div class='modal-footer'>
-              
+
               <a href='#' class='btn' data-dismiss='modal'>Close</a>
             </div>
 	</div>
@@ -172,7 +172,7 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 		<div id="log" class="modal fade in">
     		  	<div class="modal-heading">
 			    	<h3 class="modal-title">Please sign in</h3>
-			 	</div> 
+			 	</div>
 			  	<div class="modal-body">
 			    	<form accept-charset="UTF-8" role="form" method="post" action="">
                     <fieldset>
@@ -183,14 +183,35 @@ $userid = ($_SESSION['userid'])? $_SESSION['userid'] : "ddddddddd";
 			    		<div class="form-group">
 			    			<input class="form-control" placeholder="Password" name="password" type="password" value="">
 			    		</div>
-			    		
+
 			    		<input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
 			    	</fieldset>
 			      	</form>
 			      	</div>
             <div class='modal-footer'>
-              
+
               <a href='#' class='btn' data-dismiss='modal'>Close</a>
             </div>
-			   
+                         <script>
+             		function validateEmail(str){
+             			var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+							    return str.match(pattern);
+             		}
+             		function validPhone(str){
+             			var pattern = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+							    return str.match(pattern);
+             		}
+									function validateForm()
+										{
+										var x=document.forms["myForm"]["email"].value;
+										var y=document.forms["myForm"]["phone_number"].value;
+										if(validateEmail(x) && validPhone(y)){
+												return true;
+										}else{
+											return false;
+										}
+
+								}
+             </script>
+
 			</div>
